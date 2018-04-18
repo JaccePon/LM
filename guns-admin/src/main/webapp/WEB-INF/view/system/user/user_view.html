@@ -38,11 +38,7 @@
                                                     value="${user.birthday}"
                                                     clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})"/>
 
-                                            <#input id="citySel" name="部门" underline="true" readonly="readonly" value="${deptName}"
-                                                    hidden="deptid" hiddenValue="${user.deptid}"
-                                                    clickFun="UserInfoDlg.showInfoDeptSelectTree(); return false;"
-                                                    style="background-color: #ffffff !important;"
-                                                    selectFlag="true" selectId="menuContent" selectTreeId="treeDemo" selectStyle="width:250px !important;"/>
+                                            <#input id="citySel" name="部门" underline="true" value="${deptName}" disabled="disabled"/>
 
                                             <#input id="phone" name="电话" value="${user.phone}"/>
                                         </div>

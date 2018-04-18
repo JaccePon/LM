@@ -15,7 +15,7 @@ guns:
 
 ###################  项目启动端口  ###################
 server:
-  port: 8080
+  port: 8099
 
 ###################  beetl配置  ###################
 beetl:
@@ -79,9 +79,9 @@ mybatis-plus:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://123.207.27.18:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
-    password: root
+    password: Jacce@2018
     db-name: guns
     filters: log4j,wall,mergeStat
 
@@ -89,14 +89,14 @@ spring:
 guns:
   flowable:
     datasource:
-      url: jdbc:mysql://127.0.0.1:3306/guns_flowable?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+      url: jdbc:mysql://123.207.27.18:3306/guns_flowable?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
       username: root
-      password: root
+      password: Jacce@2018
   muti-datasource:
     default-dataSource-name: dataSourceGuns #默认的数据源名称
-    url: jdbc:mysql://127.0.0.1:3306/guns_flowable?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://123.207.27.18:3306/guns_flowable?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
-    password: root
+    password: Jacce@2018
 
 logging:
   level.root: info
@@ -112,9 +112,9 @@ logging:
 spring:
   profiles: produce
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+      url: jdbc:mysql://123.207.27.18:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
       username: root
-      password: root
+      password: Jacce@2018
       filters: log4j,wall,mergeStat
 
 logging:
