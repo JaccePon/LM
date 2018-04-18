@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.CustomDao">
+
+	<sql id="Base_Column_List">
+	id,userId,name,vxAccount, gender,phone,address,height,weight,advertisement,size,createTime,updateTime,operateBy,remark,status
+	</sql>
+
+
+	<select id="selectCustoms" resultType="map">
+		select
+		<include refid="Base_Column_List" />
+		from custom
+		where 1=1
+		<if test="name != null and name != ''">
+			and ( ( name like CONCAT('%',#{name},'%')) or ( vxAccount like CONCAT('%',#{name},'%')) or ( phone like CONCAT('%',#{name},'%')) )
+		</if>
+		<if test="userId != null and userId != 0">
+			and userId=#{userId}
+		</if>
+		<if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+			and (createTime between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+		</if>
+		and status=0
+	</select>
+
+
+	<select id="getByPhoneORVX" resultType="com.stylefeng.guns.common.persistence.model.Custom">
+
+		SELECT <include refid="Base_Column_List" />
+		from custom
+		where 1=1 AND ( phone=#{phone} OR vxAccount=#{vxAccount} ) AND  userId=#{userId}
+
+	</select>
+
+
+</mapper>

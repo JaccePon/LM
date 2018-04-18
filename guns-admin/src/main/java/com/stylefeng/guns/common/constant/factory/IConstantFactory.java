@@ -113,4 +113,14 @@ public interface IConstantFactory {
      */
     List<Integer> getParentDeptIds(Integer deptid);
 
+    /*
+    * 获取客户的状态
+    * */
+    String getCustomStatusName(Integer status);
+
+    /*
+    * 处理过长的信息
+    * */
+    String getCustomMsgTooLong(String msg);
+
 }

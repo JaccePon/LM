@@ -1,0 +1,48 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+	<div class="ibox-content">
+		<div class="form-horizontal" id="userInfoForm">
+		
+			<input type="hidden" id="id" value="">
+
+			<div class="row">
+				<div class="col-sm-6 b-r">
+					<#input id="name" name="姓名" underline="true"/>
+
+					<#input id="vxAccount" name="微信号" underline="true"/>
+
+					<#select id="gender" name="性别" underline="true">
+						<option value="2">女</option>
+						<option value="1">男</option>
+					</#select>
+
+					<#input id="phone" name="联系电话" underline="true" />
+
+					<#input id="address" name="地址" underline="true" />
+
+
+				</div>
+				<div class="col-sm-6">
+					<div id="driverInfoContent">
+						<#input id="height" name="身高(cm)" underline="true"/>
+						<#input id="weight" name="体重(kg)" underline="true"/>
+						<#input id="size" name="码数" underline="true"/>
+						<#input id="advertisement" name="广告" underline="true"/>
+
+						<textarea rows="4" cols="48"  id="remark"  name="备注"  placeholder="备注" onKeyDown='if (this.value.length>=300){event.returnValue=false}'></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="row btn-group-m-t">
+				<div class="col-sm-10">
+					<#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="CustomInfoDlg.addSubmit()"/>
+					<#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="CustomInfoDlg.close()"/>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/custom/custom_info.js"></script>
+@}

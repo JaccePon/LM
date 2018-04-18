@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.stylefeng.guns.common.constant.cache.Cache;
 import com.stylefeng.guns.common.constant.cache.CacheKey;
+import com.stylefeng.guns.common.constant.state.CustomStatus;
 import com.stylefeng.guns.common.constant.state.ManagerStatus;
 import com.stylefeng.guns.common.constant.state.MenuStatus;
 import com.stylefeng.guns.common.persistence.dao.*;
@@ -36,6 +37,7 @@ public class ConstantFactory implements IConstantFactory {
     private UserMapper userMapper = SpringContextHolder.getBean(UserMapper.class);
     private MenuMapper menuMapper = SpringContextHolder.getBean(MenuMapper.class);
     private NoticeMapper noticeMapper = SpringContextHolder.getBean(NoticeMapper.class);
+    private CustomMapper customMapper = SpringContextHolder.getBean(CustomMapper.class);
 
     public static IConstantFactory me() {
         return SpringContextHolder.getBean("constantFactory");
@@ -327,6 +329,25 @@ public class ConstantFactory implements IConstantFactory {
             parentDeptIds.add(Integer.valueOf(StrKit.removeSuffix(StrKit.removePrefix(s, "["), "]")));
         }
         return parentDeptIds;
+    }
+
+    @Override
+    public String getCustomStatusName(Integer status) {
+        return CustomStatus.valueOf(status);
+    }
+
+    @Override
+    public String getCustomMsgTooLong(String msg) {
+        String newmsg="-";
+        if(ToolUtil.isNotEmpty(msg)){
+            if(msg.length()>10){
+
+                newmsg=msg.substring(0,9)+"...<a href=\"javascript:openMsg('"+msg+"');\" >详情</a>";
+            }else{
+                newmsg=msg;
+            }
+        }
+        return newmsg;
     }
 
 

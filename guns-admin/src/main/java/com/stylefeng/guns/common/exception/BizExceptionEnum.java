@@ -46,6 +46,13 @@ public enum BizExceptionEnum implements ServiceExceptionEnum{
 	TWO_PWD_NOT_MATCH(405, "两次输入密码不一致"),
 
 	/**
+	* 客户问题
+	*
+	* */
+	CUSTOM_ALREADY_REG(401,"微信号或者电话已存在"),
+
+
+	/**
 	 * 错误的请求
 	 */
 	MENU_PCODE_COINCIDENCE(400,"菜单编号和副编号不能一致"),

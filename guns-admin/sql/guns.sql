@@ -26,6 +26,34 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for sys_dept
 -- ----------------------------
+
+DROP TABLE IF EXISTS `custom`;
+CREATE TABLE `custom` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '客户ID',
+  `userId` bigint(20) NOT NULL COMMENT '对应的用户id',
+  `name` varchar(45) NOT NULL COMMENT '客户名称',
+  `vxAccount` varchar(45) NOT NULL COMMENT '微信号',
+  `gender` int(1) NOT NULL DEFAULT '0' COMMENT '性别，2 为 女 ，1 为 男',
+  `phone` varchar(30) DEFAULT NULL COMMENT '联系电话',
+  `address` varchar(500) DEFAULT NULL COMMENT '地址',
+  `height` varchar(20) DEFAULT NULL COMMENT '身高，单位是cm',
+  `weight` varchar(20) DEFAULT NULL COMMENT '体重，单位是kg',
+  `size` varchar(20) DEFAULT NULL COMMENT '码数',
+  `advertisement` int(10) NOT NULL COMMENT '对应的广告平台id',
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updateTime` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `operateBy` varchar(20) NOT NULL COMMENT '操作人的名称',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `status` int(2) NOT NULL DEFAULT '0' COMMENT '状态，0 为 正常 ，1 为删除。',
+  PRIMARY KEY (`id`),
+  KEY `index_name` (`name`,`userId`) USING BTREE,
+  KEY `index_ad` (`advertisement`,`userId`) USING BTREE,
+  KEY `index_phone` (`phone`,`userId`) USING BTREE,
+  KEY `index_vx_userId` (`userId`,`vxAccount`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
@@ -212,7 +240,7 @@ CREATE TABLE `sys_notice` (
 -- ----------------------------
 -- Records of sys_notice
 -- ----------------------------
-INSERT INTO `sys_notice` VALUES ('6', '世界', '10', '欢迎使用Guns管理系统', '2017-01-11 08:53:20', '1');
+INSERT INTO `sys_notice` VALUES ('6', '世界', '10', '欢迎使用L.M.管理系统', '2017-01-11 08:53:20', '1');
 INSERT INTO `sys_notice` VALUES ('8', '你好', null, '你好', '2017-05-10 19:28:57', '1');
 
 -- ----------------------------
