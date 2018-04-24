@@ -27,6 +27,40 @@ SET FOREIGN_KEY_CHECKS=0;
 -- Table structure for sys_dept
 -- ----------------------------
 
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE `order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `userId` bigint(20) NOT NULL COMMENT '对应的用户id',
+  `pic` varchar(100) DEFAULT NULL COMMENT '订单的衣服图片',
+  `orderNum` varchar(100) NOT NULL COMMENT '对应app的订单号',
+  `code` varchar(100) DEFAULT NULL COMMENT '衣服货号',
+  `price` int(11) NOT NULL COMMENT '原价',
+  `disPrice` int(11) NOT NULL COMMENT '代理价',
+  `customId` bigint(20) NOT NULL COMMENT '关联的客户id',
+  `source` int(2) NOT NULL DEFAULT '3' COMMENT '来源（1.特价 、2.微商城、3.普通）',
+  `gathering` int(2) NOT NULL DEFAULT '3' COMMENT '收款情况（1.利润已收、2.利润未收、3.已收款、4.未收款、5.垫款）',
+  `status` int(2) NOT NULL DEFAULT '1' COMMENT '状态（1.待货、2.已发货、3.断货、4.取消订单、5.成交、6.退货中、7.已退货、8.特殊处理、9.删除）',
+  `waiting` varchar(20) DEFAULT '无' COMMENT '待货时间',
+  `post` int(11) DEFAULT '0' COMMENT '快递费',
+  `opinion` varchar(100) DEFAULT '无' COMMENT '上级意见',
+  `remark` varchar(200) DEFAULT '无' COMMENT '备注',
+  `refund` int(2) NOT NULL DEFAULT '1' COMMENT '退款情况（1.无，2.已收退款，3.未收退款，4.退款完成）',
+  `progress` int(4) NOT NULL DEFAULT '10' COMMENT '进度（0-100）',
+  `remind` int(20) DEFAULT '0' COMMENT '提醒，用于后期扩展（微信提醒，短信提醒等）',
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updateTime` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `index_userId_status` (`userId`,`status`) USING BTREE,
+  KEY `index_userId_gathering` (`userId`,`gathering`) USING BTREE,
+  KEY `index_userId_source` (`userId`,`source`) USING BTREE,
+  KEY `index_userId_customId` (`userId`,`customId`) USING BTREE,
+  KEY `index_userId_createTime` (`userId`,`createTime`) USING BTREE,
+  KEY `index_userId_orderNum` (`userId`,`orderNum`) USING BTREE,
+  KEY `index_userId_code` (`userId`,`code`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 DROP TABLE IF EXISTS `custom`;
 CREATE TABLE `custom` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '客户ID',
