@@ -1,5 +1,7 @@
 package com.stylefeng.guns.core.shiro;
 
+import com.stylefeng.guns.common.constant.state.DisPriceEnum;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -77,5 +79,37 @@ public class ShiroUser implements Serializable {
     public void setRoleNames(List<String> roleNames) {
         this.roleNames = roleNames;
     }
+
+    public int getDisCount(){
+
+        List<String> roleNames = getRoleNames();
+
+        int discount=100;
+        if(roleNames!=null &&roleNames.size()>0){
+            for(String name :roleNames){
+                if(name.contains(DisPriceEnum.JINJI.getRole())){
+                    return DisPriceEnum.JINJI.getDisCount();
+                }
+                if(name.contains(DisPriceEnum.YINJI.getRole())){
+                    return DisPriceEnum.YINJI.getDisCount();
+                }
+                if(name.contains(DisPriceEnum.YIJI.getRole())){
+                    return DisPriceEnum.YIJI.getDisCount();
+                }
+                if(name.contains(DisPriceEnum.ERJI.getRole())){
+                    return DisPriceEnum.ERJI.getDisCount();
+                }
+                if(name.contains(DisPriceEnum.SANJI.getRole())){
+                    return DisPriceEnum.SANJI.getDisCount();
+                }
+                if(name.contains(DisPriceEnum.SIJI.getRole())){
+                    return DisPriceEnum.SIJI.getDisCount();
+                }
+            }
+        }
+        return discount;
+
+    }
+
 
 }

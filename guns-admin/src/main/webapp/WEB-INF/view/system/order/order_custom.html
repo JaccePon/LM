@@ -1,0 +1,133 @@
+@layout("/common/_container.html"){
+
+
+<script>
+    var MgrUser = {
+        id: "managerTable",//表格id
+        seItem: null,		//选中的条目
+        table: null,
+        layerIndex: -1,
+        deptid:0
+    };
+
+    /**
+     * 初始化表格的列
+     */
+    MgrUser.initColumn = function () {
+        var columns = [
+            {field: 'selectItem', radio: true},
+            {title: '姓名', field: 'name', align: 'center', valign: 'middle'},
+            {title: '电话', field: 'phone', align: 'center', valign: 'middle'},
+            {title: '地址', field: 'address', align: 'center', valign: 'middle'}];
+        return columns;
+    };
+
+    /**
+     * 检查是否选中
+     */
+    MgrUser.check = function () {
+        var selected = $('#' + this.id).bootstrapTable('getSelections');
+        if (selected.length == 0) {
+            Feng.info("请先选中表格中的某一记录！");
+            return false;
+        } else {
+            MgrUser.seItem = selected[0];
+            return true;
+        }
+    };
+
+    openMsg = function (msgString) {
+
+        layer.alert("<div>"+msgString+"</div>", {
+            skin: 'layui-layer-molv'
+            ,closeBtn: 0
+            ,title:"详细信息"
+            ,anim: 4 //动画类型
+        });
+
+    };
+
+    MgrUser.search = function () {
+        var queryData = {};
+
+        queryData['name'] = $("#name").val();
+        queryData['beginTime'] = $("#beginTime").val();
+        queryData['endTime'] = $("#endTime").val();
+
+        MgrUser.table.refresh({query: queryData});
+    }
+
+    $(function () {
+        var defaultColunms = MgrUser.initColumn();
+        var table = new BSTable("managerTable", "/cus/list", defaultColunms);
+        table.setPaginationType("client");
+        MgrUser.table = table.init();
+
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+
+        $("#btn_close").bind("click", function () {
+            parent.layer.close(index);
+        });
+
+        $("#btn_save").bind("click", function () {
+            window.parent.Role.table.refresh();
+            parent.layer.close(index);
+        });
+
+    });
+
+
+</script>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+				<div class="row row-lg">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-lg-12 col-sm-12">
+								<div class="row">
+									<div class="col-lg-10 col-sm-9">
+										<div class="row">
+											<div class="col-lg-4 col-sm-12">
+												<#NameCon id="name" name="填写" placeholder="姓名/手机号/微信号"/>
+											</div>
+											<div class="col-lg-4 col-sm-6">
+												<#TimeCon id="beginTime" name="开始日期" isTime="false" pattern="YYYY-MM-DD"/>
+											</div>
+											<div class="col-lg-4 col-sm-6">
+												<#TimeCon id="endTime" name="结束日期" isTime="false" pattern="YYYY-MM-DD"/>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-2 col-sm-3">
+										<div class="row">
+											<div class="col-lg-12 col-sm-12">
+												<#button name="搜索" icon="fa-search" clickFun="MgrUser.search()"/>
+												<#button name="重置" icon="fa-trash" clickFun="MgrUser.resetSearch()" space="true"/>
+											</div>
+										</div>
+									</div>
+								</div>
+								<#table id="managerTable"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-12">
+		<button class="btn btn-sm btn-info" type="button" id="btn_save">
+			<i class="ace-icon fa fa-check bigger-110"></i>保存
+		</button>
+		&nbsp;
+		<button class="btn btn-sm btn-danger" type="button" id="btn_close">
+			<i class="ace-icon fa fa-close bigger-110"></i>关闭
+		</button>
+	</div>
+
+</div>
+
+@}

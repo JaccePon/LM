@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 
 /**
@@ -13,9 +14,10 @@ import java.io.Serializable;
  * 
  * </p>
  *
- * @author stylefeng123
- * @since 2018-04-24
+ * @author JaccePon123
+ * @since 2018-04-25
  */
+@TableName("sys_order")
 public class Order extends Model<Order> {
 
     private static final long serialVersionUID = 1L;

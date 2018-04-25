@@ -2,8 +2,49 @@
  * 初始化详情对话框
  */
 var OrderInfoDlg = {
-    orderInfoData : {}
+    orderInfoData : {},
+    validateFields: {
+        orderNum: {
+            validators: {
+                notEmpty: {
+                    message: '订单号不能为空'
+                }
+            }
+        },
+        custom: {
+            validators: {
+                notEmpty: {
+                    message: '客户信息不能为空'
+                }
+            }
+        },
+        price: {
+            validators: {
+                notEmpty: {
+                    message: '原价不能为空'
+                }
+            }
+        },
+        price:{
+            validators: {
+                numeric: {
+                    message: '原价必须填数字'
+                }
+            }
+        }
+    }
 };
+
+/**
+ * 验证数据是否为空
+ */
+OrderInfoDlg.validate = function () {
+
+    $('#orderInfoForm').data("bootstrapValidator").resetForm();
+    $('#orderInfoForm').bootstrapValidator('validate');
+    return $("#orderInfoForm").data('bootstrapValidator').isValid();
+};
+
 
 /**
  * 清除数据
@@ -45,25 +86,18 @@ OrderInfoDlg.close = function() {
  */
 OrderInfoDlg.collectData = function() {
     this
-    .set('id')
-    .set('userId')
     .set('pic')
     .set('orderNum')
     .set('code')
     .set('price')
-    .set('disPrice')
-    .set('customId')
+    .set('custom')
     .set('source')
     .set('gathering')
     .set('status')
     .set('waiting')
     .set('post')
-    .set('opinion')
     .set('remark')
-    .set('refund')
-    .set('progress')
     .set('remind')
-    .set('createTime')
     ;
 }
 
@@ -74,6 +108,10 @@ OrderInfoDlg.addSubmit = function() {
 
     this.clearData();
     this.collectData();
+
+    if (!this.validate()) {
+        return;
+    }
 
     //提交信息
     var ajax = new $ax(Feng.ctxPath + "/order/add", function(data){
@@ -107,6 +145,28 @@ OrderInfoDlg.editSubmit = function() {
     ajax.start();
 }
 
+OrderInfoDlg.showCustom = function() {
+
+    var index = layer.open({
+        type: 2,
+        title: '选择客户',
+        area: ['800px', '750px'], //宽高
+        fix: false, //不固定
+        maxmin: true,
+        content: Feng.ctxPath + '/order/order_custom'
+
+    });
+    this.layerIndex = index;
+}
+
+
 $(function() {
+    Feng.initValidator("orderInfoForm", OrderInfoDlg.validateFields);
+
+
+    // 初始化图片上传
+    var avatarUp = new $WebUpload("pic");
+    avatarUp.setUploadBarId("progressBar");
+    avatarUp.init();
 
 });

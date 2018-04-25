@@ -51,6 +51,14 @@ public enum BizExceptionEnum implements ServiceExceptionEnum{
 	* */
 	CUSTOM_ALREADY_REG(401,"微信号或者电话已存在"),
 
+	/**
+	* 订单
+	* */
+	ORDER_CUSTOM_NULL(400,"客户信息为空"),
+	ORDER_CUSTOM_NOTEXIST(400,"该客户不存在"),
+	ORDER_CUSTOM_MORE(400,"存在多个客户"),
+
+
 
 	/**
 	 * 错误的请求
@@ -58,6 +66,7 @@ public enum BizExceptionEnum implements ServiceExceptionEnum{
 	MENU_PCODE_COINCIDENCE(400,"菜单编号和副编号不能一致"),
 	EXISTED_THE_MENU(400,"菜单编号重复，不能添加"),
 	DICT_MUST_BE_NUMBER(400,"字典的值必须为数字"),
+	USER_NULL(400,"用户为空"),
 	REQUEST_NULL(400, "请求有错误"),
 	SESSION_TIMEOUT(400, "会话超时"),
 	SERVER_ERROR(500, "服务器异常");

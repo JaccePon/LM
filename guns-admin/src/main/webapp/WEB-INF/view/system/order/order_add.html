@@ -1,35 +1,53 @@
 @layout("/common/_container.html"){
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <div class="form-horizontal">
+        <div class="form-horizontal" id="orderInfoForm" >
 
             <input type="hidden" id="id" value="">
 
             <div class="row">
                 <div class="col-sm-6 b-r">
-                            <#input id="id" name="主键id" underline="true"/>
-                            <#input id="userId" name="对应的用户id" underline="true"/>
-                            <#input id="pic" name="订单的衣服图片" underline="true"/>
-                            <#input id="orderNum" name="对应app的订单号" underline="true"/>
-                            <#input id="code" name="衣服货号" underline="true"/>
-                            <#input id="price" name="原价" underline="true"/>
-                            <#input id="disPrice" name="代理价" underline="true"/>
-                            <#input id="customId" name="关联的客户id" underline="true"/>
-                            <#input id="source" name="来源（1.特价 、2.微商城、3.普通）" underline="true"/>
-                            <#input id="gathering" name="收款情况（1.利润已收、2.利润未收、3.已收款、4.未收款、5.垫款）"/>
+
+                            <#avatar id="pic" name="图片" underline="true"/>
+
+                            <#input id="orderNum" name="订单号" underline="true"/>
+                            <#input id="code" name="货号" underline="true"/>
+                            <#input id="custom" name="客户" underline="true"  placeholder="姓名/手机/微信号" />
+                            <#input id="price" name="原价" underline="true"  />
+                            <div class="progress progress-striped" id="progressTipArea" style="margin-top: 20px;">
+                                <div id="progressBar" style="width: 0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" role="progressbar" class="progress-bar progress-bar-info">
+                                </div>
+                            </div>
                 </div>
 
+
                 <div class="col-sm-6">
-                            <#input id="status" name="状态（1.待货、2.已发货、3.断货、4.取消订单、5.成交、6.退货中、7.已退货、8.特殊处理、9.删除）" underline="true"/>
-                            <#input id="waiting" name="待货时间" underline="true"/>
-                            <#input id="post" name="快递费" underline="true"/>
-                            <#input id="opinion" name="上级意见" underline="true"/>
-                            <#input id="remark" name="备注" underline="true"/>
-                            <#input id="refund" name="退款情况（1.无，2.已收退款，3.未收退款，4.退款完成）" underline="true"/>
-                            <#input id="progress" name="进度（0-100）" underline="true"/>
-                            <#input id="remind" name="提醒，用于后期扩展（微信提醒，短信提醒等）" underline="true"/>
-                            <#input id="createTime" name="创建时间" underline="true"/>
-                            <#input id="updateTime" name="更新时间" underline="true"/>
+                            <#select id="source" name="来源" underline="true" >
+                                <option value="3">普通</option>
+                                <option value="2">微商城</option>
+                                <option value="1">特价</option>
+                            </#select>
+                            <#select id="gathering" name="收款情况" underline="true" >
+                                <option value="3">已收款</option>
+                                <option value="5">垫款</option>
+                                <option value="2">利润未收</option>
+                                <option value="1">利润已收</option>
+                                <option value="4">未收款</option>
+                            </#select>
+                            <#select id="status" name="状态" underline="true" >
+                                <option value="1">待货</option>
+                                <option value="2">已发货</option>
+                                <option value="3">断货</option>
+                                <option value="4">取消订单</option>
+                                <option value="5">成交</option>
+                                <option value="6">退货中</option>
+                                <option value="7">已退货</option>
+                                <option value="8">特殊处理</option>
+                            </#select>
+                            <#input id="waiting" name="待货时间" underline="true" value="无"/>
+                            <#input id="post" name="快递费" underline="true" value="0"/>
+                            <#input id="remark" name="备注" underline="true" value="-"/>
+                            <#input id="remind" name="提醒(勿填)" value="0"/>
                 </div>
             </div>
 

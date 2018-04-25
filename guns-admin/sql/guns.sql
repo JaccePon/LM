@@ -27,8 +27,8 @@ SET FOREIGN_KEY_CHECKS=0;
 -- Table structure for sys_dept
 -- ----------------------------
 
-DROP TABLE IF EXISTS `order`;
-CREATE TABLE `order` (
+DROP TABLE IF EXISTS `sys_order`;
+CREATE TABLE `sys_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `userId` bigint(20) NOT NULL COMMENT '对应的用户id',
   `pic` varchar(100) DEFAULT NULL COMMENT '订单的衣服图片',
