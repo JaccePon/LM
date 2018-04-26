@@ -258,7 +258,7 @@ $(function () {
     $("#sex").val($("#sexValue").val());
 
     // 初始化头像上传
-    var avatarUp = new $WebUpload("avatar");
+    var avatarUp = new $WebUpload("avatar",0);
     avatarUp.setUploadBarId("progressBar");
     avatarUp.init();
 

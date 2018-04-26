@@ -9,16 +9,18 @@ import com.stylefeng.guns.common.constant.state.ManagerStatus;
 import com.stylefeng.guns.common.constant.state.MenuStatus;
 import com.stylefeng.guns.common.persistence.dao.*;
 import com.stylefeng.guns.common.persistence.model.*;
+import com.stylefeng.guns.config.properties.GunsProperties;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.support.StrKit;
-import com.stylefeng.guns.core.util.Convert;
-import com.stylefeng.guns.core.util.SpringContextHolder;
-import com.stylefeng.guns.core.util.ToolUtil;
+import com.stylefeng.guns.core.util.*;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,7 +39,6 @@ public class ConstantFactory implements IConstantFactory {
     private UserMapper userMapper = SpringContextHolder.getBean(UserMapper.class);
     private MenuMapper menuMapper = SpringContextHolder.getBean(MenuMapper.class);
     private NoticeMapper noticeMapper = SpringContextHolder.getBean(NoticeMapper.class);
-    private CustomMapper customMapper = SpringContextHolder.getBean(CustomMapper.class);
 
     public static IConstantFactory me() {
         return SpringContextHolder.getBean("constantFactory");
@@ -348,6 +349,45 @@ public class ConstantFactory implements IConstantFactory {
             }
         }
         return newmsg;
+    }
+
+    @Override
+    public String getPicShow(String picPath) {
+
+      // String show=" <img alt=\"image\" class=\"img-circle\" src=\"/kaptcha/"+picPath+"\" width=\"75px\" height=\"90px\"> ";
+
+        String path=picPath;
+        if(path.contains(File.separator)){
+
+            path=path.substring(0,path.indexOf(File.separator))+"/"+path.substring(path.indexOf(File.separator)+1,path.length());
+
+        }
+
+       String show=" <a href=\"javascript:openPic('/kaptcha/" + path + "');\" ><img alt=\"image\" src=\"/kaptcha/"+picPath+"\"  width=\"50px\" height=\"60px\"> </a>";
+
+        return show;
+    }
+
+    @Override
+    public String getPriceShow(Integer price) {
+
+        if(ToolUtil.isEmpty(price)){
+            return "0";
+        }
+        if((price+"").endsWith("00")){
+            return price/100+"";
+        }
+
+        double v = price.doubleValue();
+        String s = NumUtil.keepRandomPoint(v / 100, 2);
+
+        return s;
+    }
+
+    @Override
+    public String getDateString(Date createTime) {
+
+        return DateUtil.getDay(createTime);
     }
 
 

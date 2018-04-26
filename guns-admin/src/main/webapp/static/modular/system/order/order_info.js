@@ -165,7 +165,7 @@ $(function() {
 
 
     // 初始化图片上传
-    var avatarUp = new $WebUpload("pic");
+    var avatarUp = new $WebUpload("pic",1);
     avatarUp.setUploadBarId("progressBar");
     avatarUp.init();
 

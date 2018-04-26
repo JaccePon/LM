@@ -2,6 +2,7 @@ package com.stylefeng.guns.modular.system.controller;
 
 import com.stylefeng.guns.common.annotion.Permission;
 import com.stylefeng.guns.common.constant.factory.ConstantFactory;
+import com.stylefeng.guns.common.constant.state.PicPathEnum;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.exception.GunsException;
@@ -9,7 +10,9 @@ import com.stylefeng.guns.core.shiro.ShiroKit;
 import com.stylefeng.guns.core.shiro.ShiroUser;
 import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.modular.system.dao.CustomDao;
+import com.stylefeng.guns.modular.system.transfer.OrderDto;
 import com.stylefeng.guns.modular.system.warpper.CustomWarpper;
+import com.stylefeng.guns.modular.system.warpper.OrderWarpper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +40,8 @@ import java.util.Map;
 public class OrderController extends BaseController {
 
     private String PREFIX = "/system/order/";
+
+    private  String DEFAULTPIC= PicPathEnum.ORDER.getPath()+"AAAAA-DEFAULT.jpg";
 
     @Autowired
     private IOrderService orderService;
@@ -76,8 +81,16 @@ public class OrderController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(String condition) {
-        return orderService.selectList(null);
+    public Object list(OrderDto orderDto) {
+
+        if (!ShiroKit.isAdmin()) {
+            Integer userId = ShiroKit.getUser().getId();
+            orderDto.setUserId(Long.parseLong(userId+""));
+        }
+
+        List<Map<String, Object>> orders = orderService.selectListByCondition(orderDto);
+
+        return new OrderWarpper(orders).warp();
     }
 
     /**
@@ -114,12 +127,16 @@ public class OrderController extends BaseController {
 
         Integer price = order.getPrice();
 
+        if(ToolUtil.isEmpty(order.getPic())){
+            order.setPic(DEFAULTPIC);
+        }
         order.setCustomId(customid);
         order.setCreateTime(new Date());
         order.setUpdateTime(new Date());
         order.setPrice(price*100);
         order.setDisPrice(price*user.getDisCount());
         order.setUserId(Long.parseLong(""+user.getId()));
+        order.setOpinion("-");
 
         orderService.insert(order);
         return super.SUCCESS_TIP;

@@ -97,16 +97,16 @@ public class KaptchaController {
      * @author stylefeng
      * @Date 2017/5/24 23:00
      */
-    @RequestMapping("/{pictureId}")
-    public void renderPicture(@PathVariable("pictureId") String pictureId, HttpServletResponse response) {
-        String path = gunsProperties.getFileUploadPath() + pictureId + ".jpg";
+    @RequestMapping("/{type}/{pictureId}")
+    public void renderPicture(@PathVariable("pictureId") String pictureId, @PathVariable("type") String type,HttpServletResponse response) {
+        String path = gunsProperties.getFileUploadPath()+type+"/" + pictureId + ".jpg";
         try {
             byte[] bytes = FileUtil.toByteArray(path);
             response.getOutputStream().write(bytes);
         }catch (Exception e){
             //如果找不到图片就返回一个默认图片
             try {
-                response.sendRedirect("/static/img/girl.gif");
+                response.sendRedirect("/static/img/LM.png");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

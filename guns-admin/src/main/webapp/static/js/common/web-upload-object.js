@@ -13,12 +13,23 @@
 		this.pictureId = pictureId;
 		this.uploadBtnId = pictureId + "BtnId";
 		this.uploadPreId = pictureId + "PreId";
-		this.uploadUrl = Feng.ctxPath + '/mgr/upload';
+		this.uploadUrl = Feng.ctxPath + '/mgr/upload/0';
 		this.fileSizeLimit = 100 * 1024 * 1024;
 		this.picWidth = 800;
 		this.picHeight = 800;
         this.uploadBarId = null;
 	};
+
+    var $WebUpload = function(pictureId,type) {
+        this.pictureId = pictureId;
+        this.uploadBtnId = pictureId + "BtnId";
+        this.uploadPreId = pictureId + "PreId";
+        this.uploadUrl = Feng.ctxPath + '/mgr/upload/'+type;
+        this.fileSizeLimit = 100 * 1024 * 1024;
+        this.picWidth = 800;
+        this.picHeight = 800;
+        this.uploadBarId = null;
+    };
 
 	$WebUpload.prototype = {
 		/**

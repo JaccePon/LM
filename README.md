@@ -116,7 +116,7 @@ public class MybatisPlusConfig {
 ## 极简的图片上传方法
 guns对web-upload进行二次封装,让图片的上传功能呢只用2行代码即可实现,如下
 ```
-var avatarUp = new $WebUpload("avatar");
+var avatarUp = new $WebUpload("avatar",0);
 avatarUp.init();
 ```
 具体实现请参考static/js/common/web-upload-object.js

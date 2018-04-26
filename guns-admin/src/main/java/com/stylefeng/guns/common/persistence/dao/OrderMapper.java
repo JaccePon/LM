@@ -2,6 +2,10 @@ package com.stylefeng.guns.common.persistence.dao;
 
 import com.stylefeng.guns.common.persistence.model.Order;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.stylefeng.guns.modular.system.transfer.OrderDto;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface OrderMapper extends BaseMapper<Order> {
 
+    List<Map<String,Object>> selectListByCondition(OrderDto orderDto);
 }

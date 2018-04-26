@@ -19,7 +19,7 @@ Order.initColumn = function () {
             {title: '货号', field: 'code', visible: true, align: 'center', valign: 'middle'},
             {title: '原价', field: 'price', visible: true, align: 'center', valign: 'middle'},
             {title: '代理价', field: 'disPrice', visible: true, align: 'center', valign: 'middle'},
-            {title: '客户', field: 'customId', visible: true, align: 'center', valign: 'middle'},
+            {title: '客户', field: 'name', visible: true, align: 'center', valign: 'middle'},
             {title: '来源', field: 'source', visible: true, align: 'center', valign: 'middle'},
             {title: '收款', field: 'gathering', visible: true, align: 'center', valign: 'middle'},
             {title: '状态', field: 'status', visible: true, align: 'center', valign: 'middle'},
@@ -28,9 +28,9 @@ Order.initColumn = function () {
             {title: '快递费', field: 'post', visible: true, align: 'center', valign: 'middle'},
             {title: '备注', field: 'remark', visible: true, align: 'center', valign: 'middle'},
             {title: '上级意见', field: 'opinion', visible: true, align: 'center', valign: 'middle'},
-            {title: '进度', field: 'progress', visible: true, align: 'center', valign: 'middle'},
+            {title: '进度', field: 'progress', visible: true, align: 'center', valign: 'middle',sortable: true},
             {title: '提醒', field: 'remind', visible: true, align: 'center', valign: 'middle'},
-            {title: '创建时间', field: 'createTime', visible: true, align: 'center', valign: 'middle'}
+            {title: '创建时间', field: 'createTime', visible: true, align: 'center', valign: 'middle' ,sortable: true}
     ];
 };
 
@@ -105,9 +105,36 @@ Order.search = function () {
     Order.table.refresh({query: queryData});
 };
 
+
+function openPic(obj){
+    layer.open({
+        type: 1,
+        title: false,
+        closeBtn: 0,
+        area: '516px',
+        skin: 'layui-layer-nobg', //没有背景色
+        shadeClose: true,
+        content: "<img alt=\"image\" src=\""+obj+"\"  width=\"515px\" height=\"615px\" > "
+    });
+}
+
+Order.resetSearch = function () {
+    $("#name").val("");
+    $("#beginTime").val("");
+    $("#endTime").val("");
+
+    $('#progress').val("");
+
+    Order.search();
+}
+
+
 $(function () {
     var defaultColunms = Order.initColumn();
     var table = new BSTable(Order.id, "/order/list", defaultColunms);
     table.setPaginationType("client");
+    table.setPageSize(7);
+    table.setPageList([7,15,20]);
+    table.setHeight(700);
     Order.table = table.init();
 });

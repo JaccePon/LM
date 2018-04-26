@@ -2,6 +2,7 @@ package com.stylefeng.guns.common.constant.factory;
 
 import com.stylefeng.guns.common.persistence.model.Dict;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -123,4 +124,30 @@ public interface IConstantFactory {
     * */
     String getCustomMsgTooLong(String msg);
 
+    /**
+    * @描述:获取图片
+    * @创建人: JaccePon
+    * @创建时间: 4/26/2018 2:03 PM
+    * @参数:
+    * @返回值:
+    * @版本:  V 1.0
+    */String getPicShow(String picPath);
+
+    /**
+    * @描述:获取展示的价格
+    * @创建人: JaccePon
+    * @创建时间: 4/26/2018 2:50 PM
+    * @参数:
+    * @返回值:
+    * @版本:  V 1.0
+    */String getPriceShow(Integer price);
+
+    /**
+    * @描述:修改时间，去了时分秒
+    * @创建人: JaccePon
+    * @创建时间: 4/26/2018 3:39 PM
+    * @参数:
+    * @返回值:
+    * @版本:  V 1.0
+    */String getDateString(Date createTime);
 }

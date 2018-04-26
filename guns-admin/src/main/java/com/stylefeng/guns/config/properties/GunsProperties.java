@@ -1,9 +1,11 @@
 package com.stylefeng.guns.config.properties;
 
+import com.stylefeng.guns.common.constant.state.PicPathEnum;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.Properties;
 
 import static com.stylefeng.guns.core.util.ToolUtil.getTempPath;
 import static com.stylefeng.guns.core.util.ToolUtil.isEmpty;
@@ -39,14 +41,37 @@ public class GunsProperties {
         if (isEmpty(fileUploadPath)) {
             return getTempPath();
         } else {
+
+            //判断是windows还是linux
+            Properties prop = System.getProperties();
+
+            String os = prop.getProperty("os.name");
+            if (os != null && os.toLowerCase().indexOf("linux") > -1) {
+                if(fileUploadPath.contains(":")){
+                    fileUploadPath=fileUploadPath.substring(fileUploadPath.indexOf(":")+1,fileUploadPath.length());
+                }
+            } else {
+                if(!fileUploadPath.contains(":")){
+                    fileUploadPath="d:"+fileUploadPath;
+                }
+            }
+
             //判断有没有结尾符,没有得加上
-            if (!fileUploadPath.endsWith(File.separator)) {
-                fileUploadPath = fileUploadPath + File.separator;
+            if (!fileUploadPath.endsWith("/")) {
+                fileUploadPath = fileUploadPath + "/";
             }
             //判断目录存不存在,不存在得加上
             if (haveCreatePath == false) {
-                File file = new File(fileUploadPath);
-                file.mkdirs();
+
+                PicPathEnum[] values = PicPathEnum.values();
+                for(PicPathEnum en:values){
+                    String middle = en.getPath();
+                    String path= fileUploadPath+middle;
+                    File file = new File(path);
+                    if (!file.exists()){
+                        file.mkdirs();
+                    }
+                }
                 haveCreatePath = true;
             }
             return fileUploadPath;

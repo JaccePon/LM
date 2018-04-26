@@ -31,4 +31,52 @@
         id, userId, pic, orderNum, code, price, disPrice, customId, source, gathering, status, waiting, post, opinion, remark, refund, progress, remind, createTime, updateTime
     </sql>
 
+    <select id="selectListByCondition" resultType="map" parameterType="com.stylefeng.guns.modular.system.transfer.OrderDto">
+        select
+        o.id, o.userId, o.pic, o.orderNum, o.code, o.price, o.disPrice, o.customId, o.source, o.gathering, o.status, o.waiting, o.post, o.opinion, o.remark, o.refund, o.progress, o.remind, o.createTime, o.updateTime,
+        c.name
+        from guns.sys_order o  left join guns.custom c on o.customId=c.id
+        where 1=1
+        <if test="userId != null and userId != 0">
+            and o.userId=#{userId}
+        </if>
+        <if test="orderNum != null and orderNum != '' ">
+            and o.orderNum=#{orderNum}
+        </if>
+        <if test="code != null and code != '' ">
+            and o.code=#{code}
+        </if>
+        <if test="customPhone != null and customPhone != '' ">
+            and c.phone=#{customPhone}
+        </if>
+        <if test="source != null and source != 0 ">
+            and o.source=#{source}
+        </if>
+        <if test="gathering != null and gathering != 0 ">
+            and o.gathering=#{gathering}
+        </if>
+        <if test="status != null and status != 0 ">
+            and o.status=#{status}
+        </if>
+        <if test="status == null or (status !=null and status ==0)  ">
+            and o.status <![CDATA[!= ]]> 9
+        </if>
+        <if test="refund != null and refund != 0 ">
+            and o.refund=#{refund}
+        </if>
+        <if test="progress != null and progress == 100 ">
+            and o.progress=100
+        </if>
+        <if test="progress != null and progress != 100  and progress !=0 ">
+            and o.progress <![CDATA[!= ]]> 100
+        </if>
+        <if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+            and (createTime between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+        </if>
+
+        ORDER BY  o.id  DESC
+
+    </select>
+
+
 </mapper>

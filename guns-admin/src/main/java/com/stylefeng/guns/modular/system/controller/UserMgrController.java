@@ -6,6 +6,7 @@ import com.stylefeng.guns.common.constant.Const;
 import com.stylefeng.guns.common.constant.dictmap.UserDict;
 import com.stylefeng.guns.common.constant.factory.ConstantFactory;
 import com.stylefeng.guns.common.constant.state.ManagerStatus;
+import com.stylefeng.guns.common.constant.state.PicPathEnum;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.persistence.dao.UserMapper;
 import com.stylefeng.guns.common.persistence.model.User;
@@ -339,12 +340,13 @@ public class UserMgrController extends BaseController {
     /**
      * 上传图片(上传到项目的webapp/static/img)
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/upload")
+    @RequestMapping(method = RequestMethod.POST, path = "/upload/{type}")
     @ResponseBody
-    public String upload(@RequestPart("file") MultipartFile picture) {
+    public String upload(@RequestPart("file") MultipartFile picture,@PathVariable Integer type) {
         String pictureName = UUID.randomUUID().toString() + ".jpg";
         try {
             String fileSavePath = gunsProperties.getFileUploadPath();
+            pictureName=PicPathEnum.valueOf(type)+pictureName;
             picture.transferTo(new File(fileSavePath + pictureName));
         } catch (Exception e) {
             throw new GunsException(BizExceptionEnum.UPLOAD_ERROR);

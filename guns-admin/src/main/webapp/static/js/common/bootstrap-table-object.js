@@ -14,9 +14,11 @@
         this.paginationType = "server";			//默认分页方式是服务器分页,可选项"client"
         this.toolbarId = bstableId + "Toolbar";
         this.columns = columns;
-        this.height = 686;						//默认表格高度665
+        this.height = 686;						//默认表格高度686
         this.data = {};
         this.queryParams = {}; // 向后台传递的自定义参数
+        this.pageSize=15;
+        this.pageList=[15, 50, 100];
     };
 
     BSTable.prototype = {
@@ -41,8 +43,8 @@
                     sortable: true,      		//是否启用排序
                     sortOrder: "desc",     		//排序方式
                     pageNumber: 1,      			//初始化加载第一页，默认第一页
-                    pageSize: 15,      			//每页的记录行数（*）
-                    pageList: [15, 50, 100],  	//可供选择的每页的行数（*）
+                    pageSize: this.pageSize,      			//每页的记录行数（*）
+                    pageList: this.pageList,  	//可供选择的每页的行数（*）
                     queryParamsType: 'limit', 	//默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
                     queryParams: function (param) {
                         return $.extend(me.queryParams, param);
@@ -79,6 +81,15 @@
          */
         setPaginationType: function (type) {
             this.paginationType = type;
+        },
+        setPageList: function (pageList) {
+            this.pageList = pageList;
+        },
+        setPageSize: function (pageSize) {
+            this.pageSize = pageSize;
+        },
+        setHeight: function (height) {
+            this.height = height;
         },
 
         /**
