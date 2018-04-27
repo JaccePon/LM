@@ -8,7 +8,7 @@ package com.stylefeng.guns.common.constant.enums;
 public enum RefundEnum {
 
     //1.无，2.已收退款，3.未收退款，4.退款完成
-    WU(1, "无"),YISHOUTUIKUAN(2, "已收退款"),WEISHOUTUIKUAN(3, "未收退款"),TUIKUANWANCHENG(4, "退款完成");
+    WU(1, "无"),YISHOUTUIKUAN(2, "<font style='color:#E6A23C;'>已收退款</font>"),WEISHOUTUIKUAN(3, "<font style='color:#F56C6C;'>未收退款</font>"),TUIKUANWANCHENG(4, "退款完成");
 
     int code;
     String message;

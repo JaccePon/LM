@@ -8,7 +8,7 @@ package com.stylefeng.guns.common.constant.enums;
 public enum GatheringEnum {
 
     //1.利润已收、2.利润未收、3.已收款、4.未收款、5.垫款
-    LIRUNYISHOU(1, "利润已收"),LIRUNWEIHSOU(2, "利润未收"),YISHOUKUAN(3, "已收款"),WEISHOUKUAN(4, "未收款"),DIANKUAN(5, "垫款");
+    LIRUNYISHOU(1, "利润已收"),LIRUNWEIHSOU(2, "<font style='color:#F56C6C;'>利润未收</font>"),YISHOUKUAN(3, "已收款"),WEISHOUKUAN(4, "<font style='color:#F56C6C;'>未收款</font>"),DIANKUAN(5, "<font style='color:#F56C6C;'>垫款</font>");
 
     int code;
     String message;

@@ -28,10 +28,10 @@ public class OrderWarpper  extends BaseControllerWarpper {
         map.put("pic", ConstantFactory.me().getPicShow( map.get("pic")+""));
         map.put("price", ConstantFactory.me().getPriceShow( (Integer)map.get("price")));
         map.put("disPrice", ConstantFactory.me().getPriceShow( (Integer)map.get("disPrice")));
-        map.put("source", SourceEnum.valueOf((Integer) map.get("source")));
-        map.put("gathering", GatheringEnum.valueOf((Integer) map.get("gathering")));
-        map.put("status", OrderStatusEnum.valueOf((Integer) map.get("status")));
-        map.put("refund", RefundEnum.valueOf((Integer) map.get("refund")));
+        map.put("sourceName", SourceEnum.valueOf((Integer) map.get("source")));
+        map.put("gatheringName", GatheringEnum.valueOf((Integer) map.get("gathering")));
+        map.put("statusName", OrderStatusEnum.valueOf((Integer) map.get("status")));
+        map.put("refundName", RefundEnum.valueOf((Integer) map.get("refund")));
         map.put("remark", ConstantFactory.me().getCustomMsgTooLong( map.get("remark")+""));
         map.put("createTime", ConstantFactory.me().getDateString( (Date)map.get("createTime")));
         map.put("progress", map.get("progress")+" %");

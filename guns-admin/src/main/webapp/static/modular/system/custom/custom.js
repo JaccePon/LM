@@ -15,6 +15,7 @@ var MgrUser = {
 MgrUser.initColumn = function () {
     var columns = [
         {field: 'selectItem', radio: true},
+        {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
         {title: '姓名', field: 'name', align: 'center', valign: 'middle', sortable: true},
         {title: '微信号', field: 'vxAccount', align: 'center', valign: 'middle'},
         {title: '性别', field: 'sexName', align: 'center', valign: 'middle'},
@@ -88,23 +89,6 @@ MgrUser.openChangeUser = function () {
     }
 };
 
-/**
- * 点击角色分配
- * @param
- */
-MgrUser.roleAssign = function () {
-    if (this.check()) {
-        var index = layer.open({
-            type: 2,
-            title: '角色分配',
-            area: ['300px', '400px'], //宽高
-            fix: false, //不固定
-            maxmin: true,
-            content: Feng.ctxPath + '/mgr/role_assign/' + this.seItem.id
-        });
-        this.layerIndex = index;
-    }
-};
 
 /**
  * 删除用户

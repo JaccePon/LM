@@ -143,12 +143,12 @@ public class OrderController extends BaseController {
     }
 
     /**
-     * 删除
+     * 单个修改，包括删除
      */
-    @RequestMapping(value = "/delete")
+    @RequestMapping(value = "/updateOrder")
     @ResponseBody
-    public Object delete(@RequestParam Integer orderId) {
-        orderService.deleteById(orderId);
+    public Object delete( Order order) {
+        orderService.updateById(order);
         return SUCCESS_TIP;
     }
 
