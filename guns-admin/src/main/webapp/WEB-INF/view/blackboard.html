@@ -166,8 +166,8 @@
                     Feng.error("请填写正整数！");
                     return ;
 				}else{
-                    count+=pArry[i];
-                    buttonStr+= "<button type=\"button\"  onclick=\"deleteNum(this)\"  class=\"btn btn-default\">"+pArry[i]+"</button>";
+                    count+=parseInt(pArry[i]);
+                    buttonStr+= "<button type=\"button\"  onclick=\"deleteNum(this)\"  class=\"btn btn-default\">"+pArry[i]+"</button>\n";
 				};
             }
 
@@ -207,25 +207,27 @@
                 }
                 var disprice=count*dis;
                 var disPriceStr="";
-                if(disprice.length<3){
+                if((disprice+"").length<3){
                     disPriceStr="0."+disprice;
                 }else{
                     if((disprice+"").endWith("00")){
-                        disPriceStr=(disprice+"").substring(0,disprice.length-2)+"";
+                        disPriceStr=(disprice+"").substring(0,(disprice+"").length-2)+"";
                     }else {
-                        disPriceStr = (disprice+"").substring(0, disprice.length - 2) + "." + (disprice+"").substring(disprice.length - 2, disprice.length);
+                        disPriceStr = (disprice+"").substring(0, (disprice+"").length - 2) + "." + (disprice+"").substring((disprice+"").length - 2, (disprice+"").length);
                     }
 				}
+				console.info(disprice);
+				console.info(disPriceStr);
                 var wisprice=count*wis;
                 var wisPriceStr="";
-                if(wisprice.length<3){
+                if((wisprice+"").length<3){
                     wisPriceStr="0."+wisprice;
                 }else{
                     if((wisprice+"").endWith("00")){
-                        wisPriceStr=(wisprice+"").substring(0,wisprice.length-2)+"";
+                        wisPriceStr=(wisprice+"").substring(0,(wisprice+"").length-2)+"";
 					}else{
 
-                        wisPriceStr=(wisprice+"").substring(0,wisprice.length-2)+"."+(wisprice+"").substring(wisprice.length-2,wisprice.length);
+                        wisPriceStr=(wisprice+"").substring(0,(wisprice+"").length-2)+"."+(wisprice+"").substring((wisprice+"").length-2,(wisprice+"").length);
                     }
 				}
 
@@ -234,7 +236,7 @@
                     "<td><button type=\"button\" class=\"btn btn-primary \" onclick=\"addNum(this)\" >" +
                     "    <i class=\"fa fa-plus\"></i>&nbsp;" +
                     "</button></td>" +
-                    "<td>" +buttonStr
+                    "<td>" +buttonStr+
                     "</td>" +
                     "<td style=\"font-size: 15px\">"+count+"</td>" +
                     "<td style=\"font-size: 15px\">"+disPriceStr+"</td>" +
@@ -251,19 +253,19 @@
                 	var newlirunCount=	wisPriceStr+lirunCount;
 
                 if((newlirunCount+"").endWith("00")){
-                    newlirunCount=(newlirunCount+"").substring(0,newlirunCount.length-2)+"";
+                    newlirunCount=(newlirunCount+"").substring(0,(newlirunCount+"").length-2)+"";
                 }else{
 
-                    newlirunCount=(newlirunCount+"").substring(0,newlirunCount.length-2)+"."+(newlirunCount+"").substring(newlirunCount.length-2,newlirunCount.length);
+                    newlirunCount=(newlirunCount+"").substring(0,(newlirunCount+"").length-2)+"."+(newlirunCount+"").substring((newlirunCount+"").length-2,(newlirunCount+"").length);
                 }
 				     $("#lirunCount").text(newlirunCount);
 
                 var newzhuanzhangCount=	(count+zhuanzhangCount)*(100-wis);
                 if((newzhuanzhangCount+"").endWith("00")){
-                    newzhuanzhangCount=(newzhuanzhangCount+"").substring(0,newzhuanzhangCount.length-2)+"";
+                    newzhuanzhangCount=(newzhuanzhangCount+"").substring(0,(newzhuanzhangCount+"").length-2)+"";
                 }else{
 
-                    newzhuanzhangCount=(newzhuanzhangCount+"").substring(0,newzhuanzhangCount.length-2)+"."+(newzhuanzhangCount+"").substring(newzhuanzhangCount.length-2,newzhuanzhangCount.length);
+                    newzhuanzhangCount=(newzhuanzhangCount+"").substring(0,(newzhuanzhangCount+"").length-2)+"."+(newzhuanzhangCount+"").substring((newzhuanzhangCount+"").length-2,(newzhuanzhangCount+"").length);
                 }
 				     $("#zhuanzhangCount").text(newzhuanzhangCount);
 
@@ -273,7 +275,6 @@
         });
 
 	}
-
     String.prototype.endWith=function(endStr){
         var d=this.length-endStr.length;
         return (d>=0&&this.lastIndexOf(endStr)==d)
