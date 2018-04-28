@@ -71,7 +71,7 @@ Order.openOrderDetail = function () {
         var index = layer.open({
             type: 2,
             title: '详情',
-            area: ['800px', '750px'], //宽高
+            area: ['800px', '705px'], //宽高
             fix: false, //不固定
             maxmin: true,
             content: Feng.ctxPath + '/order/order_update/' + Order.seItem.id
@@ -313,7 +313,7 @@ Order.showEdit=function(type){
                 var shoukuan= $("input[name='shoukuan']:checked").val();
 
 
-                    if(obj.source!="微商城"){
+                    if(obj.source!=2){
                         if(shoukuan==1||shoukuan==2){
                         Feng.error("非微商城的订单，勿选择利润状况!");
                             flag=false;

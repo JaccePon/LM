@@ -3,7 +3,9 @@ package com.stylefeng.guns.modular.system.controller;
 import com.stylefeng.guns.common.annotion.Permission;
 import com.stylefeng.guns.common.constant.factory.ConstantFactory;
 import com.stylefeng.guns.common.constant.state.PicPathEnum;
+import com.stylefeng.guns.common.constant.state.StatusProcessEnum;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
+import com.stylefeng.guns.common.persistence.model.Custom;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.exception.GunsException;
 import com.stylefeng.guns.core.shiro.ShiroKit;
@@ -71,7 +73,18 @@ public class OrderController extends BaseController {
     @RequestMapping("/order_update/{orderId}")
     public String orderUpdate(@PathVariable Integer orderId, Model model) {
         Order order = orderService.selectById(orderId);
+
+        order.setPrice(Integer.parseInt(ConstantFactory.me().getPriceShow(order.getPrice())));
+
         model.addAttribute("item",order);
+        Long customId = order.getCustomId();
+
+        Custom custom = customDao.selectById(customId);
+
+        if(custom!=null){
+            model.addAttribute("phone",custom.getPhone());
+        }
+
         LogObjectHolder.me().set(order);
         return PREFIX + "order_edit.html";
     }
@@ -158,6 +171,42 @@ public class OrderController extends BaseController {
     @RequestMapping(value = "/update")
     @ResponseBody
     public Object update(Order order,String custom) {
+
+        if(ToolUtil.isEmpty(custom)){
+            throw new GunsException(BizExceptionEnum.ORDER_CUSTOM_NULL);
+        }
+
+        ShiroUser user = ShiroKit.getUser();
+        if (ToolUtil.isEmpty(user)) {
+            throw new GunsException(BizExceptionEnum.USER_NULL);
+        }
+
+        List<Map<String, Object>> list = customDao.selectCustoms( custom,null, null,user.getId());
+        if(list==null){
+            throw new GunsException(BizExceptionEnum.ORDER_CUSTOM_NOTEXIST);
+        }else{
+            if(list.size()==0){
+                throw new GunsException(BizExceptionEnum.ORDER_CUSTOM_NOTEXIST);
+            }else{
+                if(list.size()>1){
+                    throw new GunsException(BizExceptionEnum.ORDER_CUSTOM_MORE);
+                }
+            }
+        }
+
+        Map<String, Object> map = list.get(0);
+        Long customid = (Long)map.get("id");
+        order.setCustomId(customid);
+        order.setUpdateTime(new Date());
+
+        if(ToolUtil.isEmpty(order.getPic())){
+            order.setPic(DEFAULTPIC);
+        }
+        Integer price = order.getPrice();
+        order.setDisPrice(price*user.getDisCount());
+
+        Integer status = order.getStatus();
+        order.setProgress(StatusProcessEnum.valueOf(status));
         orderService.updateById(order);
         return super.SUCCESS_TIP;
     }

@@ -44,10 +44,15 @@
                                 <option value="7">已退货</option>
                                 <option value="8">特殊处理</option>
                             </#select>
+                            <#select id="refund" name="退款情况" underline="true" >
+                                <option value="1">无</option>
+                                <option value="2">已收退款</option>
+                                <option value="3">未收退款</option>
+                                <option value="4">退款完成</option>
+                            </#select>
                             <#input id="waiting" name="待货时间" underline="true" value="-"/>
                             <#input id="post" name="快递费" underline="true" value="0"/>
-                            <#input id="remark" name="备注" underline="true" value="-"/>
-                            <#input id="remind" name="提醒(勿填)" value="0"/>
+                            <#input id="remark" name="备注"  value="-"/>
                 </div>
             </div>
 

@@ -1,14 +1,284 @@
 @layout("/common/_container.html"){
 <div class="container-fluid" style="padding: 0 !important;">
 	<div class="row">
-		<div class="col-sm-12">
-			@for(notice in noticeList){
-				<div class="alert alert-success alert-dismissable">
-					<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-					${notice.content}
-				</div>
-			@}
+		@for(notice in noticeList){
+		<div class="alert alert-success alert-dismissable">
+			<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+			${notice.content}
 		</div>
+		@}
+
+
+		<div class="row">
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-7">
+
+				<div class="row">
+					<div class="col-sm-4">
+						<h3>日常转账运算统计</h3>
+					</div>
+					<div class="col-sm-8">
+						<div class="row">
+							<div class="col-sm-7">
+								<button type="button" id="userTag1" class="btn btn-default" onclick="userTag(1)">
+									<span class="glyphicon glyphicon-user"></span> 一级
+								</button>
+								<button type="button" id="userTag2" class="btn btn-default" onclick="userTag(2)">
+									<span class="glyphicon glyphicon-user"></span> 二级
+								</button>
+								<button type="button" id="userTag3" class="btn btn-default" onclick="userTag(3)">
+									<span class="glyphicon glyphicon-user"></span> 三级
+								</button>
+							</div>
+							<div class="col-sm-5">
+								<button type="button" id="addCount1" onclick="addCount(1)"  class="btn btn-warning">①</button>
+								<button type="button" id="addCount2" onclick="addCount(2)" class="btn btn-warning">②</button>
+								<button type="button" id="addCount3" onclick="addCount(3)" class="btn btn-warning">③</button>
+							</div>
+						</div>
+						</div>
+					</div>
+				<hr>
+			</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+			</div>
+
+		<div class="col-sm-7">
+			<table class="table">
+				<caption style="font-size: 15px">
+					<div class="row">
+						<div class="col-sm-3">
+						<span>订单统计</span>
+						</div>
+						<div class="col-sm-3">
+							<span><a class="layui-btn layui-btn-primary" href="javascript:;">总利润：</a></span> <span style="font-size: 20px" id="lirunCount">0</span>
+						</div>
+						<div class="col-sm-3">
+							<span><a class="layui-btn layui-btn-primary" href="javascript:;">总金额：</a></span> <span style="font-size: 20px" id="jinerCount">0</span>
+						</div>
+							<div class="col-sm-3">
+								<font style="color: #F56C6C;"><span>交单转账：</span> <span style="font-size: 20px" id="zhuanzhangCount">0</span></font>
+							</div>
+						<br>
+						<br>
+					</div >
+				</caption>
+				<thead>
+				<tr>
+					<th>级别</th>
+					<th>添加</th>
+					<th>原价列表</th>
+					<th>原价总和</th>
+					<th>代理转账</th>
+					<th>利润</th>
+				</tr>
+				</thead>
+				<tbody id="dateBody">
+				<tr class="danger" name="test">
+					<td><button type="button" class="btn btn-warning" onclick="deletelevel(this)">①</button></td>
+					<td><#button name="" icon="fa-plus" clickFun="addNum(this)"/></td>
+					<td>
+						<button type="button"  onclick="deleteNum(this)"  class="btn btn-default">1260</button>
+						<button type="button"  onclick="deleteNum(this)"  class="btn btn-default">1530</button>
+						<button type="button"  onclick="deleteNum(this)"  class="btn btn-default">2790</button>
+					</td>
+					<td style="font-size: 15px">5580</td>
+					<td style="font-size: 15px">3348</td>
+					<td style="font-size: 15px">2232</td>
+				</tr>
+
+				</tbody>
+			</table>
+			</div>
+
+			<div class="col-sm-3">
+
+			</div>
+
+		</div>
+
 	</div>
 </div>
+
+<script>
+
+	function userTag(type){
+		$("#userTag"+type).siblings().attr("class","btn btn-default");
+        $("#userTag"+type).attr("class","btn btn-info");
+		$("#dateBody").html("");
+
+		if(type==1){
+            $("#addCount1").attr("class","btn btn-warning");
+            $("#addCount2").attr("class","btn btn-warning");
+            $("#addCount3").attr("class","btn btn-warning");
+
+            $("#addCount1").attr("onclick"," addCount(1)");
+            $("#addCount2").attr("onclick"," addCount(2)");
+            $("#addCount3").attr("onclick"," addCount(3)");
+		}else{
+            if(type==2){
+				$("#addCount1").attr("class","btn btn-warning disabled");
+                $("#addCount1").removeAttr("onclick");
+                $("#addCount2").attr("class","btn btn-warning");
+                $("#addCount3").attr("class","btn btn-warning");
+                $("#addCount2").attr("onclick"," addCount(2)");
+                $("#addCount3").attr("onclick"," addCount(3)");
+            }else{
+                $("#addCount1").attr("class","btn btn-warning disabled");
+                $("#addCount1").removeAttr("onclick");
+                $("#addCount2").attr("class","btn btn-warning disabled");
+                $("#addCount2").removeAttr("onclick");
+                $("#addCount3").attr("class","btn btn-warning");
+                $("#addCount3").attr("onclick"," addCount(3)");
+            }
+		}
+
+	}
+
+	function addCount(type){
+	    if($("#userTag1").attr("class")=="btn btn-default"&&$("#userTag2").attr("class")=="btn btn-default"&&$("#userTag3").attr("class")=="btn btn-default"){
+			Feng.error("请先在右边选择 您的代理身份 ！");
+			return ;
+		}
+
+		var str="<span>输入订单价格： </span><textarea rows=\"3\" cols=\"42\"  id=\"price\" placeholder='(多个订单用\" ; \"号隔开)' onKeyDown='if (this.value.length>=100){event.returnValue=false}'></textarea>";
+
+        layer.confirm(str, {
+            btn: ['统计'] //按钮
+        }, function(){
+			var flag=true;
+
+			var price=$("#price").val();
+
+           var pArry =price.split(";");
+           var count=0;
+           var buttonStr="";
+            for(var i = 0;i < pArry.length; i++) {
+                if(!(/^\d+$/.test(pArry[i]))){
+                    flag=false;
+                    Feng.error("请填写正整数！");
+                    return ;
+				}else{
+                    count+=pArry[i];
+                    buttonStr+= "<button type=\"button\"  onclick=\"deleteNum(this)\"  class=\"btn btn-default\">"+pArry[i]+"</button>";
+				};
+            }
+
+			if(flag){
+                $("#dateBody tr[name='test']").remove();
+
+                var _btn=$("#userTag1").parent().children("button[class='btn btn-info']");
+
+                var wis=0;
+                if(_btn.attr("id")=="userTag1"){
+                    wis=40;
+				}else{
+                    if(_btn.attr("id")=="userTag2"){
+                        wis=32;
+                    }else{
+                        wis=22;
+                    }
+				}
+
+                var dis=0;
+                var className="";
+                var tag="";
+                if(type==1){
+                    dis=60;
+                    className="success";
+                    tag="①";
+                }else{
+                    if(type==2){
+                        dis=68;
+                        className="warning";
+                        tag="②";
+                    }else{
+                        dis=78;
+                        className="danger";
+                        tag="③";
+                    }
+                }
+                var disprice=count*dis;
+                var disPriceStr="";
+                if(disprice.length<3){
+                    disPriceStr="0."+disprice;
+                }else{
+                    if((disprice+"").endWith("00")){
+                        disPriceStr=(disprice+"").substring(0,disprice.length-2)+"";
+                    }else {
+                        disPriceStr = (disprice+"").substring(0, disprice.length - 2) + "." + (disprice+"").substring(disprice.length - 2, disprice.length);
+                    }
+				}
+                var wisprice=count*wis;
+                var wisPriceStr="";
+                if(wisprice.length<3){
+                    wisPriceStr="0."+wisprice;
+                }else{
+                    if((wisprice+"").endWith("00")){
+                        wisPriceStr=(wisprice+"").substring(0,wisprice.length-2)+"";
+					}else{
+
+                        wisPriceStr=(wisprice+"").substring(0,wisprice.length-2)+"."+(wisprice+"").substring(wisprice.length-2,wisprice.length);
+                    }
+				}
+
+				var newStr="<tr class=\""+className+"\" name='show"+type+"'>\n" +
+                    "<td><button type=\"button\" class=\"btn btn-warning\" onclick=\"deletelevel(this)\">"+tag+"</button></td>" +
+                    "<td><button type=\"button\" class=\"btn btn-primary \" onclick=\"addNum(this)\" >" +
+                    "    <i class=\"fa fa-plus\"></i>&nbsp;" +
+                    "</button></td>" +
+                    "<td>" +buttonStr
+                    "</td>" +
+                    "<td style=\"font-size: 15px\">"+count+"</td>" +
+                    "<td style=\"font-size: 15px\">"+disPriceStr+"</td>" +
+                    "<td style=\"font-size: 15px\">"+wisPriceStr+"</td>" +
+                    "</tr>";
+
+                    $("#dateBody").append(newStr);
+
+                    var lirunCount=parseFloat($("#lirunCount").text())*100;
+                    var jinerCount=parseInt($("#jinerCount").text());
+                    var zhuanzhangCount=parseFloat($("#zhuanzhangCount").text())*100;
+
+               		 $("#jinerCount").text(jinerCount+count);
+                	var newlirunCount=	wisPriceStr+lirunCount;
+
+                if((newlirunCount+"").endWith("00")){
+                    newlirunCount=(newlirunCount+"").substring(0,newlirunCount.length-2)+"";
+                }else{
+
+                    newlirunCount=(newlirunCount+"").substring(0,newlirunCount.length-2)+"."+(newlirunCount+"").substring(newlirunCount.length-2,newlirunCount.length);
+                }
+				     $("#lirunCount").text(newlirunCount);
+
+                var newzhuanzhangCount=	(count+zhuanzhangCount)*(100-wis);
+                if((newzhuanzhangCount+"").endWith("00")){
+                    newzhuanzhangCount=(newzhuanzhangCount+"").substring(0,newzhuanzhangCount.length-2)+"";
+                }else{
+
+                    newzhuanzhangCount=(newzhuanzhangCount+"").substring(0,newzhuanzhangCount.length-2)+"."+(newzhuanzhangCount+"").substring(newzhuanzhangCount.length-2,newzhuanzhangCount.length);
+                }
+				     $("#zhuanzhangCount").text(newzhuanzhangCount);
+
+
+
+			}
+        });
+
+	}
+
+    String.prototype.endWith=function(endStr){
+        var d=this.length-endStr.length;
+        return (d>=0&&this.lastIndexOf(endStr)==d)
+    }
+
+</script>
+
 @}

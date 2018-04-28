@@ -18,17 +18,17 @@ var OrderInfoDlg = {
                 }
             }
         },
-        price: {
-            validators: {
-                notEmpty: {
-                    message: '原价不能为空'
-                }
-            }
-        },
         price:{
             validators: {
                 numeric: {
                     message: '原价必须填数字'
+                }
+            }
+        },
+        post:{
+            validators: {
+                numeric: {
+                    message: '邮费必须填数字'
                 }
             }
         }
@@ -39,6 +39,43 @@ var OrderInfoDlg = {
  * 验证数据是否为空
  */
 OrderInfoDlg.validate = function () {
+
+    var source=$("#source").val();
+    var gathering=$("#gathering").val();
+    var status=$("#status").val();
+    var refund=$("#refund").val();
+    if(source!=2){
+        if(gathering==1||gathering==2){
+            Feng.error("非微商城的订单，勿选择利润状况!");
+            return false;
+        }
+    }else{
+        if(gathering==3||gathering==4||gathering==5){
+            Feng.error("微商城的订单，请选择利润状况!");
+            return false;
+        }
+    }
+    if(status==5){
+        if(gathering==2||gathering==4||gathering==5){
+            Feng.error("成交的订单，收款情况尚未完成！！！");
+            return false;
+        }
+        if(refund==2||refund==3){
+            Feng.error("成交的订单，退款情况尚未完成！！！");
+            return false;
+        }
+    }
+    if(status==7){
+
+        if(gathering==2||gathering==4||gathering==5){
+            Feng.error("已退货的订单，收款情况尚未完成！！！");
+            return false;
+        }
+        if(refund!=4){
+            Feng.error("已退货的订单，退款情况尚未完成！！！");
+            return false;
+        }
+    }
 
     $('#orderInfoForm').data("bootstrapValidator").resetForm();
     $('#orderInfoForm').bootstrapValidator('validate');
@@ -98,6 +135,7 @@ OrderInfoDlg.collectData = function() {
     .set('post')
     .set('remark')
     .set('remind')
+    .set('refund')
     ;
 }
 
@@ -163,6 +201,14 @@ OrderInfoDlg.showCustom = function() {
 $(function() {
     Feng.initValidator("orderInfoForm", OrderInfoDlg.validateFields);
 
+    var idVal = $("#id").val();
+
+    if(idVal!=null&&idVal!=undefined&&idVal!=""&&idVal!=0){
+        $("#source").val($("#sourceValue").val());
+        $("#gathering").val($("#gatheringValue").val());
+        $("#status").val($("#statusValue").val());
+        $("#refund").val($("#refundValue").val());
+    }
 
     // 初始化图片上传
     var avatarUp = new $WebUpload("pic",1);

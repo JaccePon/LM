@@ -16,7 +16,7 @@
 
                     <#input id="orderNum" name="订单号" underline="true" value="${item.orderNum}"/>
                     <#input id="code" name="货号" underline="true" value="${item.code}"/>
-                    <#input id="custom" name="客户" underline="true"  value="姓名/手机/微信号" />
+                    <#input id="custom" name="客户" underline="true"  value="${phone}" />
                     <#input id="price" name="原价" underline="true"  value="${item.price}"/>
                     <div class="progress progress-striped" id="progressTipArea" style="margin-top: 20px;">
                         <div id="progressBar" style="width: 0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" role="progressbar" class="progress-bar progress-bar-info">
@@ -48,10 +48,15 @@
                         <option value="7">已退货</option>
                         <option value="8">特殊处理</option>
                     </#select>
+                    <#select id="refund" name="退款情况" underline="true" >
+                        <option value="1">无</option>
+                        <option value="2">已收退款</option>
+                        <option value="3">未收退款</option>
+                        <option value="4">退款完成</option>
+                    </#select>
                     <#input id="waiting" name="待货时间" underline="true"  value="${item.waiting}"/>
                     <#input id="post" name="快递费" underline="true" value="${item.post}"/>
-                    <#input id="remark" name="备注" underline="true" value="${item.remark}"/>
-                    <#input id="remind" name="提醒(勿填)" value="0"/>
+                    <#input id="remark" name="备注" value="${item.remark}"/>
                 </div>
             </div>
 
