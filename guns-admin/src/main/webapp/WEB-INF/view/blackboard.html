@@ -20,7 +20,7 @@
 					</div>
 					<div class="col-sm-8">
 						<div class="row">
-							<div class="col-sm-7">
+							<div class="col-sm-7" id="userDiv">
 								<button type="button" id="userTag1" class="btn btn-default" onclick="userTag(1)">
 									<span class="glyphicon glyphicon-user"></span> 一级
 								</button>
@@ -31,7 +31,7 @@
 									<span class="glyphicon glyphicon-user"></span> 三级
 								</button>
 							</div>
-							<div class="col-sm-5">
+							<div class="col-sm-5" >
 								<button type="button" id="addCount1" onclick="addCount(1)"  class="btn btn-warning">①</button>
 								<button type="button" id="addCount2" onclick="addCount(2)" class="btn btn-warning">②</button>
 								<button type="button" id="addCount3" onclick="addCount(3)" class="btn btn-warning">③</button>
@@ -58,10 +58,10 @@
 						<span>订单统计</span>
 						</div>
 						<div class="col-sm-3">
-							<span><a class="layui-btn layui-btn-primary" href="javascript:;">总利润：</a></span> <span style="font-size: 20px" id="lirunCount">0</span>
+							<span><a class="layui-btn layui-btn-primary" href="javascript:;">总金额：</a></span> <span style="font-size: 20px" id="jinerCount">0</span>
 						</div>
 						<div class="col-sm-3">
-							<span><a class="layui-btn layui-btn-primary" href="javascript:;">总金额：</a></span> <span style="font-size: 20px" id="jinerCount">0</span>
+							<span><a class="layui-btn layui-btn-primary" href="javascript:;">总利润：</a></span> <span style="font-size: 20px" id="lirunCount">0</span>
 						</div>
 							<div class="col-sm-3">
 								<font style="color: #F56C6C;"><span>交单转账：</span> <span style="font-size: 20px" id="zhuanzhangCount">0</span></font>
@@ -82,12 +82,12 @@
 				</thead>
 				<tbody id="dateBody">
 				<tr class="danger" name="test">
-					<td><button type="button" class="btn btn-warning" onclick="deletelevel(this)">①</button></td>
-					<td><#button name="" icon="fa-plus" clickFun="addNum(this)"/></td>
+					<td><button type="button" class="btn btn-warning" ">①</button></td>
+					<td><#button name="" icon="fa-plus" /></td>
 					<td>
-						<button type="button"  onclick="deleteNum(this)"  class="btn btn-default">1260</button>
-						<button type="button"  onclick="deleteNum(this)"  class="btn btn-default">1530</button>
-						<button type="button"  onclick="deleteNum(this)"  class="btn btn-default">2790</button>
+						<button type="button"    class="btn btn-default">1260</button>
+						<button type="button"   class="btn btn-default">1530</button>
+						<button type="button"   class="btn btn-default">2790</button>
 					</td>
 					<td style="font-size: 15px">5580</td>
 					<td style="font-size: 15px">3348</td>
@@ -114,6 +114,9 @@
         $("#userTag"+type).attr("class","btn btn-info");
 		$("#dateBody").html("");
 
+        $("#zhuanzhangCount").text(0);
+        $("#lirunCount").text(0);
+        $("#jinerCount").text(0);
 		if(type==1){
             $("#addCount1").attr("class","btn btn-warning");
             $("#addCount2").attr("class","btn btn-warning");
@@ -148,7 +151,7 @@
 			return ;
 		}
 
-		var str="<span>输入订单价格： </span><textarea rows=\"3\" cols=\"42\"  id=\"price\" placeholder='(多个订单用\" ; \"号隔开)' onKeyDown='if (this.value.length>=100){event.returnValue=false}'></textarea>";
+		var str="<span>输入订单价格： </span><textarea rows=\"3\" cols=\"40\"  id=\"price\" placeholder='(多个订单用\" ; \"号隔开)' onKeyDown='if (this.value.length>=100){event.returnValue=false}'></textarea>";
 
         layer.confirm(str, {
             btn: ['统计'] //按钮
@@ -177,15 +180,6 @@
                 var _btn=$("#userTag1").parent().children("button[class='btn btn-info']");
 
                 var wis=0;
-                if(_btn.attr("id")=="userTag1"){
-                    wis=40;
-				}else{
-                    if(_btn.attr("id")=="userTag2"){
-                        wis=32;
-                    }else{
-                        wis=22;
-                    }
-				}
 
                 var dis=0;
                 var className="";
@@ -194,15 +188,42 @@
                     dis=60;
                     className="success";
                     tag="①";
+
+                    if(_btn.attr("id")=="userTag1"){
+                        wis=40;
+                    }else{
+                        Feng.error("错误！无权限添加一级代理的订单");
+                        return ;
+                    }
                 }else{
                     if(type==2){
                         dis=68;
                         className="warning";
                         tag="②";
+                        if(_btn.attr("id")=="userTag1"){
+                            wis=8;
+                        }else{
+                            if(_btn.attr("id")=="userTag2"){
+                                wis=32;
+                            }else{
+                                Feng.error("错误！无权限添加二级代理的订单");
+                                return ;
+                            }
+                        }
                     }else{
                         dis=78;
                         className="danger";
                         tag="③";
+
+                        if(_btn.attr("id")=="userTag1"){
+                            wis=18;
+                        }else{
+                            if(_btn.attr("id")=="userTag2"){
+                                wis=10;
+                            }else{
+                                wis=22;
+                            }
+                        }
                     }
                 }
                 var disprice=count*dis;
@@ -216,8 +237,7 @@
                         disPriceStr = (disprice+"").substring(0, (disprice+"").length - 2) + "." + (disprice+"").substring((disprice+"").length - 2, (disprice+"").length);
                     }
 				}
-				console.info(disprice);
-				console.info(disPriceStr);
+
                 var wisprice=count*wis;
                 var wisPriceStr="";
                 if((wisprice+"").length<3){
@@ -231,8 +251,8 @@
                     }
 				}
 
-				var newStr="<tr class=\""+className+"\" name='show"+type+"'>\n" +
-                    "<td><button type=\"button\" class=\"btn btn-warning\" onclick=\"deletelevel(this)\">"+tag+"</button></td>" +
+				var newStr="<tr class=\""+className+"\" name='show-"+type+"'>\n" +
+                    "<td><button type=\"button\" class=\"btn btn-warning\" onclick=\"deletelevel(this)\"><i class=\"fa fa-remove\"></i>&nbsp;"+tag+"</button></td>" +
                     "<td><button type=\"button\" class=\"btn btn-primary \" onclick=\"addNum(this)\" >" +
                     "    <i class=\"fa fa-plus\"></i>&nbsp;" +
                     "</button></td>" +
@@ -250,7 +270,7 @@
                     var zhuanzhangCount=parseFloat($("#zhuanzhangCount").text())*100;
 
                		 $("#jinerCount").text(jinerCount+count);
-                	var newlirunCount=	wisPriceStr+lirunCount;
+                	var newlirunCount=	wisprice+lirunCount;
 
                 if((newlirunCount+"").endWith("00")){
                     newlirunCount=(newlirunCount+"").substring(0,(newlirunCount+"").length-2)+"";
@@ -260,7 +280,18 @@
                 }
 				     $("#lirunCount").text(newlirunCount);
 
-                var newzhuanzhangCount=	(count+zhuanzhangCount)*(100-wis);
+                var p=0;
+                if(_btn.attr("id")=="userTag1"){
+                    p=60;
+                }else{
+                    if(_btn.attr("id")=="userTag2"){
+                        p=68;
+                    }else{
+                        p=78;
+                    }
+                }
+
+                var newzhuanzhangCount=	(jinerCount+count)*p;
                 if((newzhuanzhangCount+"").endWith("00")){
                     newzhuanzhangCount=(newzhuanzhangCount+"").substring(0,(newzhuanzhangCount+"").length-2)+"";
                 }else{
@@ -269,16 +300,184 @@
                 }
 				     $("#zhuanzhangCount").text(newzhuanzhangCount);
 
-
-
 			}
-        });
+                layer.msg('well done', {icon: 1});
+        }
+		);
 
 	}
     String.prototype.endWith=function(endStr){
         var d=this.length-endStr.length;
         return (d>=0&&this.lastIndexOf(endStr)==d)
     }
+
+    layer.tips('1、先选择您的代理级别~~~~', '#userDiv', {
+        tips: [1, '#3595CC'],
+        time: 15000,
+	 	tipsMore: true
+    });
+
+    layer.tips('2、再选择您需要统计的代理订单~~~~', '#addCount3', {
+        tips: [2, '#009688'],
+        time: 15000,
+        tipsMore: true
+    });
+
+
+    function deleteNum(obj) {
+        var _td=$(obj).parent();
+        $(obj).remove();
+        if(_td.children().length==0){
+            _td.parent().remove();
+		}else{
+            countTd(_td);
+		}
+        countAll();
+
+    }
+
+    function countTd(_td){
+        var pricecount=0;
+        _td.children("button").each(function(){
+            var price=parseInt($(this).text());
+            pricecount+=price;
+        });
+        var type=_td.parent().attr("name").split("-")[1];
+        var dis=0;
+        if(type=="1"){
+            dis=60;
+        }else{
+            if(type=="2"){
+                dis=68;
+            }else{
+                dis=78;
+            }
+        }
+
+        var _btn=$("#userTag1").parent().children("button[class='btn btn-info']");
+        var wis=0;
+        if(_btn.attr("id")=="userTag1"){
+            if(type=="1"){
+                wis=40;
+            }else{
+                if(type=="2"){
+                    wis=8;
+                }else{
+                    wis=18;
+                }
+            }
+        }else{
+            if(_btn.attr("id")=="userTag2"){
+                if(type=="2"){
+                    wis=32;
+                }else{
+                    wis=10;
+                }
+            }else{
+                wis=22;
+            }
+        }
+
+
+        _td.parent().children().eq(3).text(pricecount);
+
+        var disprice=pricecount*dis;
+        if((disprice+"").endWith("00")){
+            disprice=(disprice+"").substring(0,(disprice+"").length-2)+"";
+        }else{
+
+            disprice=(disprice+"").substring(0,(disprice+"").length-2)+"."+(disprice+"").substring((disprice+"").length-2,(disprice+"").length);
+        }
+
+        _td.parent().children().eq(4).text(disprice);
+
+        var wisprice=pricecount*wis;
+        if((wisprice+"").endWith("00")){
+            wisprice=(wisprice+"").substring(0,(wisprice+"").length-2)+"";
+        }else{
+
+            wisprice=(wisprice+"").substring(0,(wisprice+"").length-2)+"."+(wisprice+"").substring((wisprice+"").length-2,(wisprice+"").length);
+        }
+        _td.parent().children().eq(5).text(wisprice);
+	}
+
+    function countAll(){
+        var _btn=$("#userTag1").parent().children("button[class='btn btn-info']");
+
+        var wis=0;
+        if(_btn.attr("id")=="userTag1"){
+            wis=60;
+        }else{
+            if(_btn.attr("id")=="userTag2"){
+                wis=68;
+            }else{
+                wis=78;
+            }
+        }
+
+        var jinercount=0;
+        var lirunCount=0;
+		$("#dateBody tr").each(function(){
+
+           var jiner=parseInt( $(this).children().eq(3).text());
+            jinercount+=jiner;
+           var lirun=parseFloat( $(this).children().eq(5).text());
+            lirunCount+=lirun;
+
+		});
+
+        var newzhuanzhangCount=0;
+		if(jinercount!=0){
+			 newzhuanzhangCount=	(jinercount)*wis;
+			if((newzhuanzhangCount+"").endWith("00")){
+				newzhuanzhangCount=(newzhuanzhangCount+"").substring(0,(newzhuanzhangCount+"").length-2)+"";
+			}else{
+
+				newzhuanzhangCount=(newzhuanzhangCount+"").substring(0,(newzhuanzhangCount+"").length-2)+"."+(newzhuanzhangCount+"").substring((newzhuanzhangCount+"").length-2,(newzhuanzhangCount+"").length);
+			}
+        }
+
+        $("#zhuanzhangCount").text(newzhuanzhangCount);
+        $("#lirunCount").text(lirunCount);
+        $("#jinerCount").text(jinercount);
+
+	}
+
+
+	function deletelevel(obj){
+        $(obj).parent().parent().remove();
+        countAll();
+	}
+
+	function addNum(obj){
+
+        var str="<span>输入订单价格： </span><textarea rows=\"3\" cols=\"40\"  id=\"price\" placeholder='(多个订单用\" ; \"号隔开)' onKeyDown='if (this.value.length>=100){event.returnValue=false}'></textarea>";
+
+        var _tr=$(obj).parent().parent();
+
+        layer.confirm(str, {
+            btn: ['统计'] //按钮
+        }, function(){
+            var price=$("#price").val();
+
+            var pArry =price.split(";");
+            var buttonStr="";
+            for(var i = 0;i < pArry.length; i++) {
+                if(!(/^\d+$/.test(pArry[i]))){
+                    flag=false;
+                    Feng.error("请填写正整数！");
+                    return ;
+                }else{
+                    buttonStr+= "<button type=\"button\"  onclick=\"deleteNum(this)\"  class=\"btn btn-default\">"+pArry[i]+"</button>\n";
+                };
+            }
+            _tr.children().eq(2).append(buttonStr);
+            countTd(_tr.children().eq(2));
+            countAll();
+
+            layer.msg("good job");
+        });
+	}
 
 </script>
 
