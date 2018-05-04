@@ -363,7 +363,7 @@ public class ConstantFactory implements IConstantFactory {
 
         }
 
-       String show=" <a href=\"javascript:openPic('/kaptcha/" + path + "');\" ><img alt=\"image\" src=\"/kaptcha/"+picPath+"\"  width=\"50px\" height=\"60px\"> </a>";
+       String show=" <a href=\"javascript:openPic('/LM/kaptcha/" + path + "');\" ><img alt=\"image\" src=\"/LM/kaptcha/"+picPath+"\"  width=\"50px\" height=\"60px\"> </a>";
 
         return show;
     }

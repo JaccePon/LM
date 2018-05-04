@@ -5,6 +5,7 @@ import com.google.code.kaptcha.Producer;
 import com.stylefeng.guns.config.properties.GunsProperties;
 import com.stylefeng.guns.core.util.FileUtil;
 import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -102,7 +103,6 @@ public class KaptchaController {
     public void renderPicture(@PathVariable("pictureId") String pictureId, @PathVariable("type") String type,HttpServletResponse response) {
         String path = gunsProperties.getFileUploadPath()+type+"/" + pictureId + ".jpg";
 
-        Logger.getLogger(KaptchaController.class).debug("--------------"+path);
         try {
             byte[] bytes = FileUtil.toByteArray(path);
             response.getOutputStream().write(bytes);

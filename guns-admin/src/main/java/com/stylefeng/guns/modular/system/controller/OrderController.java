@@ -115,6 +115,8 @@ public class OrderController extends BaseController {
 
         if(ToolUtil.isEmpty(custom)){
             throw new GunsException(BizExceptionEnum.ORDER_CUSTOM_NULL);
+        }else{
+            custom=custom.trim();
         }
 
         ShiroUser user = ShiroKit.getUser();
@@ -174,6 +176,8 @@ public class OrderController extends BaseController {
 
         if(ToolUtil.isEmpty(custom)){
             throw new GunsException(BizExceptionEnum.ORDER_CUSTOM_NULL);
+        }else{
+            custom=custom.trim();
         }
 
         ShiroUser user = ShiroKit.getUser();
