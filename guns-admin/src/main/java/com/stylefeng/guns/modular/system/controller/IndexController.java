@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -103,6 +104,10 @@ public class IndexController extends BaseController {
                                             String str = split[1];
                                             if (str.equals("庞燕虹")) {
                                                 str = "庞丹红";
+                                            }else{
+                                                if(str.equals("吉希")){
+                                                    str="庞吉希";
+                                                }
                                             }
 
                                             //查询用户
@@ -139,13 +144,13 @@ public class IndexController extends BaseController {
                                                             Object address = mapVo.get("address");
                                                             Map addressMap = JasonParseLmUtil.stringToCollect(address.toString());
                                                             newCustom.setAddress(addressMap.get("districtAddress").toString());
-                                                            newCustom.setSize(mapVo.get("size").toString());
+                                                            newCustom.setSize(ToolUtil.isEmpty(mapVo.get("size"))?"-":mapVo.get("size").toString());
                                                             newCustom.setAdvertisement(0);
                                                             newCustom.setVxAccount(vxAccount);
                                                             newCustom.setGender(2);
 
-                                                            newCustom.setHeight("-");
-                                                            newCustom.setWeight("-");
+                                                            newCustom.setHeight(ToolUtil.isEmpty(custom.get("height"))?"-":custom.get("height").toString());
+                                                            newCustom.setWeight(ToolUtil.isEmpty(custom.get("height"))?"-":custom.get("weight").toString());
                                                             newCustom.setRemark("-");
                                                             customDao.insertAndReturnId(newCustom);
                                                             order.setCustomId(Long.parseLong(newCustom.getId() + ""));
@@ -169,38 +174,202 @@ public class IndexController extends BaseController {
                                                         Object agentPriceLv2 = mapVo.get("agentPriceLv2");
                                                         Object agentPriceLv1 = mapVo.get("agentPriceLv1");
                                                         int discount=0;
-                                                        if(str.equals("庞丹红")||str.equals("燕虹")){
+                                                        if(str.equals("庞吉希")||str.equals("庞丹红")||str.equals("燕虹")){
                                                             discount=60;
-                                                        }else{
-                                                        if(new Double(agentPriceLv3.toString()).intValue()==0){
-                                                            if(new Double(agentPriceLv2.toString()).intValue()==0){
-                                                                if(new Double(agentPriceLv1.toString()).intValue()==0){
-                                                                    discount=52;
-                                                                }else{
-                                                                    discount=60;
-                                                                }
+                                                        }else {
+                                                            if (str.equals("安妮")||str.equals("黄怡")) {
+                                                                discount = 68;
                                                             }else{
-                                                                discount=68;
+                                                            if (new Double(agentPriceLv3.toString()).intValue() == 0) {
+                                                                if (new Double(agentPriceLv2.toString()).intValue() == 0) {
+                                                                    if (new Double(agentPriceLv1.toString()).intValue() == 0) {
+                                                                        discount = 52;
+                                                                    } else {
+                                                                        discount = 60;
+                                                                    }
+                                                                } else {
+                                                                    discount = 68;
+                                                                }
+                                                            } else {
+                                                                discount = 78;
                                                             }
-                                                        }else{
-                                                            discount=78;
                                                         }
                                                         }
                                                         order.setDisPrice((new Double(price*discount)).intValue());
-                                                        String orderSource = mapVo.get("orderSource").toString();
-                                                        if(orderSource.equals("0")){
-                                                            order.setSource(3);
-                                                            order.setGathering(3);
+
+                                                        //订单状态
+                                                        String auditFlag = mapVo.get("auditFlag").toString();
+                                                        if(auditFlag.equals("14")){//拒绝
+                                                            order.setStatus(4);
+                                                            order.setProgress(100);
+                                                            String orderSource = mapVo.get("orderSource").toString();
+                                                            if(orderSource.equals("0")){
+                                                                order.setSource(3);
+                                                                order.setGathering(3);
+                                                                order.setRefund(4);
+                                                            }else{
+                                                                if(orderSource.equals("1")){
+                                                                    order.setSource(2);
+                                                                    order.setGathering(2);
+                                                                    order.setRefund(4);
+                                                                }
+                                                            }
                                                         }else{
-                                                            if(orderSource.equals("1")){
-                                                                order.setSource(2);
-                                                                order.setGathering(2);
+                                                            if(auditFlag.equals("11")||auditFlag.equals("12")){//未审核
+                                                                order.setStatus(1);
+                                                                order.setProgress(10);
+                                                                String orderSource = mapVo.get("orderSource").toString();
+                                                                if(orderSource.equals("0")){
+                                                                    order.setSource(3);
+                                                                    order.setGathering(3);
+                                                                }else{
+                                                                    if(orderSource.equals("1")){
+                                                                        order.setSource(2);
+                                                                        order.setGathering(2);
+                                                                    }
+                                                                }
+                                                            }else{
+                                                                String deliverFlag = mapVo.get("deliverFlag").toString();
+                                                                //待货
+                                                                if(deliverFlag.equals("21")||deliverFlag.equals("23")||deliverFlag.equals("29")||deliverFlag.equals("27")||deliverFlag.equals("28")){
+                                                                    order.setStatus(1);
+                                                                    order.setProgress(10);
+                                                                    String orderSource = mapVo.get("orderSource").toString();
+                                                                    if(orderSource.equals("0")){
+                                                                        order.setSource(3);
+                                                                        order.setGathering(3);
+                                                                    }else{
+                                                                        if(orderSource.equals("1")){
+                                                                            order.setSource(2);
+                                                                            order.setGathering(2);
+                                                                        }
+                                                                    }
+                                                                }else{
+
+                                                                    if(deliverFlag.equals("25")||deliverFlag.equals("2A")){//取消
+                                                                        order.setStatus(4);
+                                                                        order.setProgress(100);
+                                                                        String orderSource = mapVo.get("orderSource").toString();
+                                                                        if(orderSource.equals("0")){
+                                                                            order.setSource(3);
+                                                                            order.setGathering(3);
+                                                                            order.setRefund(4);
+                                                                        }else{
+                                                                            if(orderSource.equals("1")){
+                                                                                order.setSource(2);
+                                                                                order.setGathering(1);
+                                                                                order.setRefund(4);
+                                                                            }
+                                                                        }
+                                                                    }else{
+
+                                                                        if(deliverFlag.equals("26")||deliverFlag.equals("2B")){//断货
+                                                                            order.setStatus(3);
+                                                                            order.setProgress(100);
+                                                                            String orderSource = mapVo.get("orderSource").toString();
+                                                                            if(orderSource.equals("0")){
+                                                                                order.setSource(3);
+                                                                                order.setGathering(3);
+                                                                                order.setRefund(4);
+                                                                            }else{
+                                                                                if(orderSource.equals("1")){
+                                                                                    order.setSource(2);
+                                                                                    order.setGathering(1);
+                                                                                    order.setRefund(4);
+                                                                                }
+                                                                            }
+                                                                        }else{
+
+                                                                            if(deliverFlag.equals("22")||deliverFlag.equals("24")||deliverFlag.equals("2C")){
+
+
+                                                                                if(ToolUtil.isEmpty(mapVo.get("returnFlag"))){
+
+                                                                                String deliverDate = mapVo.get("deliverDate").toString();
+                                                                                boolean latestTen = isLatestTen(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(deliverDate));
+
+                                                                                if(latestTen){
+                                                                                    order.setStatus(2);
+                                                                                    order.setProgress(50);
+                                                                                    String orderSource = mapVo.get("orderSource").toString();
+                                                                                    if(orderSource.equals("0")){
+                                                                                        order.setSource(3);
+                                                                                        order.setGathering(3);
+                                                                                    }else{
+                                                                                        if(orderSource.equals("1")){
+                                                                                            order.setSource(2);
+                                                                                            order.setGathering(2);
+                                                                                        }
+                                                                                    }
+                                                                                }else{
+                                                                                    order.setStatus(5);
+                                                                                    order.setProgress(100);
+                                                                                    String orderSource = mapVo.get("orderSource").toString();
+                                                                                    if(orderSource.equals("0")){
+                                                                                        order.setSource(3);
+                                                                                        order.setGathering(3);
+                                                                                    }else{
+                                                                                        if(orderSource.equals("1")){
+                                                                                            order.setSource(2);
+                                                                                            order.setGathering(1);
+                                                                                        }
+                                                                                    }
+
+                                                                                }
+                                                                                }else{
+
+                                                                                    if(mapVo.get("returnFlag").toString().equals("31")){
+                                                                                        order.setStatus(6);
+                                                                                        order.setProgress(80);
+                                                                                        String orderSource = mapVo.get("orderSource").toString();
+                                                                                        if(orderSource.equals("0")){
+                                                                                            order.setSource(3);
+                                                                                            order.setGathering(3);
+                                                                                            order.setRefund(3);
+                                                                                        }else{
+                                                                                            if(orderSource.equals("1")){
+                                                                                                order.setSource(2);
+                                                                                                order.setGathering(1);
+                                                                                                order.setRefund(3);
+                                                                                            }
+                                                                                        }
+                                                                                    }else{
+                                                                                        order.setStatus(7);
+                                                                                        order.setProgress(100);
+                                                                                        String orderSource = mapVo.get("orderSource").toString();
+                                                                                        if(orderSource.equals("0")){
+                                                                                            order.setSource(3);
+                                                                                            order.setGathering(3);
+                                                                                            order.setRefund(4);
+                                                                                        }else{
+                                                                                            if(orderSource.equals("1")){
+                                                                                                order.setSource(2);
+                                                                                                order.setGathering(1);
+                                                                                                order.setRefund(4);
+                                                                                            }
+                                                                                        }
+
+                                                                                    }
+
+                                                                                }
+
+                                                                            }
+
+                                                                        }
+
+                                                                    }
+                                                                }
+
                                                             }
                                                         }
-                                                        order.setWaiting("-");
+
+                                                        if(ToolUtil.isEmpty(mapVo.get("remarks"))){
+                                                            order.setRemark("-");
+                                                        }else{
+                                                            order.setRemark(mapVo.get("remarks").toString());
+                                                        }
                                                         order.setOpinion("-");
-                                                        order.setRemark("-");
-                                                        order.setStatus(1);
+                                                        order.setWaiting("-");
                                                         order.setCreateTime(new Date());
                                                         order.setUpdateTime(new Date());
                                                         orderService.insert(order);
@@ -303,4 +472,16 @@ public class IndexController extends BaseController {
         return DEFAULTPIC;
     }
 
+
+    public boolean isLatestTen(Date addtime){
+        Calendar calendar = Calendar.getInstance();  //得到日历
+        calendar.setTime(new Date());//把当前时间赋给日历
+        calendar.add(Calendar.DAY_OF_MONTH, -10);  //设置为10天前
+        Date before7days = calendar.getTime();   //得到10天前的时间
+        if(before7days.getTime() < addtime.getTime()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
