@@ -29,9 +29,15 @@
 
 		SELECT <include refid="Base_Column_List" />
 		from custom
-		where 1=1 AND ( phone=#{phone} OR vxAccount=#{vxAccount} ) AND  userId=#{userId}
+		where 1=1 AND  userId=#{userId} AND ( phone=#{phone} OR vxAccount=#{vxAccount} )
 
 	</select>
+
+	<insert id="insertAndReturnId" parameterType="com.stylefeng.guns.common.persistence.model.Custom" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+	 insert into custom (userId,name,vxAccount,phone,address,advertisement,size,createTime,updateTime,operateBy,status,height,weight,gender,remark)
+		values(#{userId},#{name},#{vxAccount},#{phone},#{address},#{advertisement},#{size},#{createTime},#{updateTime},#{operateBy},#{status},#{height},#{weight},#{gender},#{remark})
+
+	</insert>
 
 
 </mapper>

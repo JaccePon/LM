@@ -1,4 +1,12 @@
 @layout("/common/_container.html"){
+<style>
+
+.data-list thead th{position:relative;height:56px;font-size:14px;text-align:left;color:#6f7e95;background-color:#EDF2F6;padding:0 10px;border-left:1px solid #fff;}
+.data-list tbody td{position:relative;text-align:left;padding:12px 10px;color:#354052;border-bottom:1px solid #D9E3EC;}
+.ellipsis-table{table-layout:fixed;}
+.ellipsis-table td{/* width:100%; */overflow: hidden; word-break:keep-all;white-space:nowrap;text-overflow:ellipsis;}
+</style>
+
 <div class="container-fluid" style="padding: 0 !important;">
 	<div class="row">
 		@for(notice in noticeList){
@@ -10,8 +18,6 @@
 
 
 		<div class="row">
-			<div class="col-sm-2">
-			</div>
 			<div class="col-sm-7">
 
 				<div class="row">
@@ -43,12 +49,10 @@
 			</div>
 				</div>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-sm-5">
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-2">
-			</div>
 
 		<div class="col-sm-7">
 			<table class="table">
@@ -82,7 +86,7 @@
 				</thead>
 				<tbody id="dateBody">
 				<tr class="danger" name="test">
-					<td><button type="button" class="btn btn-warning" ">①</button></td>
+					<td><button type="button" class="btn btn-warning" >①</button></td>
 					<td><#button name="" icon="fa-plus" /></td>
 					<td>
 						<button type="button"    class="btn btn-default">1260</button>
@@ -98,10 +102,42 @@
 			</table>
 			</div>
 
-			<div class="col-sm-3">
+			<div class="col-sm-5">
+				<form role="form">
+					<div class="form-group">
+						<div class="row"><div class="col-sm-6"><label for="name"></label></div><div class="col-sm-3"><h3>订单数据</h3></div><div class="col-sm-3"><button type="button" class="btn btn-primary" data-toggle="button" onclick="insertOrder()">Insert</button></div></div>
+						<br>
+						<textarea class="form-control" id="jsonStr" rows="8"></textarea>
+					</div>
+				</form>
 
 			</div>
 
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+			<div class="panel panel-success" id="resultPanel" style="display: none">
+				<div class="panel-heading">
+					<h3 class="panel-title">生成订单结果</h3>
+				</div>
+				<div class="panel-body" >
+					<div id="resultPanelbody"></div>
+					<div class="data-list data-coding">
+						<table cellpadding="0" cellspacing="0" border="0" width="100%" class="gather-table ellipsis-table">
+								<caption>错误信息</caption>
+								<thead>
+								<tr>
+									<th width="15%">原因</th>
+									<th width="85%">数据</th>
+								</tr>
+								</thead>
+								<tbody id="errorbody">
+								</tbody>
+							</table>
+					</div>
+				</div>
+			</div>
+			</div>
 		</div>
 
 	</div>
@@ -477,6 +513,55 @@
 
             layer.msg("good job");
         });
+	}
+
+	function insertOrder(){
+        //提交信息
+        var ajax = new $ax(Feng.ctxPath + "/index/addOrder.json", function(data){
+
+
+            $("#resultPanelbody").html("");
+            $("#errorbody").html("");
+            $("#errorbody").hide();
+
+            var code = data["code"];
+            if(code!="0"){
+                $("#resultPanelbody").text(data["message"]);
+			}else{
+				if(code=="0"){
+
+				    var str="<div>"+data["message"]+"<br>"+"共 " +data["size"]+" 条数据 , " +"成功："+data["successSize"]+" , 失败："+data["errorSize"]+"</div><br>"
+
+				  var list=  data["resultList"]
+					var trStr="";
+				   for(var i=0;i<list.length;i++){
+				      var map=list[i];
+				      var reason=map["reason"];
+				      var datastr=map["data"];
+                       trStr+= "    <tr>\n" +
+                          "      <td>"+reason+"</td>\n" +
+                          "      <td><div class=\"ellipsis\"><textarea style='width: 100%'>"+datastr+"</textarea></div></td>\n" +
+                          "    </tr>\n";
+				   }
+
+
+                    $("#resultPanelbody").html(str);
+                    $("#errorbody").html(trStr);
+                    $("#errorbody").show();
+				}else{
+				    var str=data["message"]+"<br>"+"共 " +data["size"]+" 条数据 , " +"成功："+data["successSize"]+" , 失败："+data["errorSize"];
+                    $("#resultPanelbody").html(str);
+				}
+			}
+			$("#resultPanel").show();
+
+        },function(data){
+            Feng.error("失败! 出现错误!");
+        });
+
+        ajax.set("jsonStr",$("#jsonStr").val());
+        ajax.start();
+
 	}
 
 </script>

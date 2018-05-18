@@ -34,4 +34,13 @@ public interface CustomDao extends BaseMapper<Custom> {
     */
     List<Custom> getByPhoneORVX(@Param("phone")String phone,@Param("vxAccount")String vxAccount, @Param("userId")Integer userId);
 
+    /**
+    * @描述:插入数据返回id
+    * @创建人: JaccePon
+    * @创建时间: 5/18/2018 3:56 PM
+    * @参数:
+    * @返回值:
+    * @版本:  V 1.0
+    */int insertAndReturnId(Custom custom);
+
 }
