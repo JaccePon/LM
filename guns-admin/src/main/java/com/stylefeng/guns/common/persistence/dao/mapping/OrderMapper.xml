@@ -74,7 +74,7 @@
             and (createTime between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
         </if>
 
-        ORDER BY  o.id  DESC
+        ORDER BY  o.createTime  DESC
 
     </select>
 
