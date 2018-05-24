@@ -16,6 +16,7 @@ import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.modular.system.dao.CustomDao;
 import com.stylefeng.guns.modular.system.service.IOrderService;
 import com.stylefeng.guns.modular.system.transfer.OrderDto;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -370,8 +371,20 @@ public class IndexController extends BaseController {
                                                         }
                                                         order.setOpinion("-");
                                                         order.setWaiting("-");
-                                                        order.setCreateTime(new Date());
-                                                        order.setUpdateTime(new Date());
+
+                                                        String createTime = mapVo.get("createDate").toString();
+                                                        if(StringUtils.isBlank(createTime)){
+                                                            order.setCreateTime(new Date());
+                                                        }else{
+                                                            order.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(createTime));
+                                                        }
+                                                        String updateTime = mapVo.get("updateDate").toString();
+                                                        if(StringUtils.isBlank(updateTime)){
+                                                            order.setUpdateTime(new Date());
+                                                        }else{
+                                                            order.setUpdateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(updateTime));
+                                                        }
+
                                                         orderService.insert(order);
                                                         successSize=successSize+1;
                                                     } catch (Exception e) {
