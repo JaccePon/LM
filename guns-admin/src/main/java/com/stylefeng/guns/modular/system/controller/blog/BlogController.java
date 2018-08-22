@@ -23,4 +23,16 @@ public class BlogController extends BaseController {
     public String index() {
         return PREFIX + "index.html";
     }
+    @RequestMapping("/to_add_blog")
+
+   /**
+   * @描述:跳转到写blog的页面
+   * @创建人: JaccePon
+   * @创建时间: 8/21/2018 6:54 PM
+   * @参数: []
+   * @返回值: java.lang.String
+   * @版本:  V 1.0
+   */ public String to_add_blog() {
+        return PREFIX + "add_blog.html";
+    }
 }
