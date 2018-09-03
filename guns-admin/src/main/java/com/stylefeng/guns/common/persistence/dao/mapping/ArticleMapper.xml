@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.common.persistence.dao.ArticleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.stylefeng.guns.common.persistence.model.Article">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="author_ip" property="authorIp" />
+        <result column="author" property="author" />
+        <result column="column_id" property="columnId" />
+        <result column="index_flag" property="indexFlag" />
+        <result column="hot_flag" property="hotFlag" />
+        <result column="hot_rank" property="hotRank" />
+        <result column="original_flag" property="originalFlag" />
+        <result column="status" property="status" />
+        <result column="publicity_flag" property="publicityFlag" />
+        <result column="source" property="source" />
+        <result column="abstracts" property="abstracts" />
+        <result column="title" property="title" />
+        <result column="short_title" property="shortTitle" />
+        <result column="content" property="content" />
+        <result column="pic_path" property="picPath" />
+        <result column="virtualread_num" property="virtualreadNum" />
+        <result column="realread_num" property="realreadNum" />
+        <result column="like_num" property="likeNum" />
+        <result column="share_num" property="shareNum" />
+        <result column="comment_num" property="commentNum" />
+        <result column="pub_time" property="pubTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id AS userId, author_ip AS authorIp, author, column_id AS columnId, index_flag AS indexFlag, hot_flag AS hotFlag, hot_rank AS hotRank, original_flag AS originalFlag, status, publicity_flag AS publicityFlag, source, abstracts, title, short_title AS shortTitle, content, pic_path AS picPath, virtualread_num AS virtualreadNum, realread_num AS realreadNum, like_num AS likeNum, share_num AS shareNum, comment_num AS commentNum, pub_time AS pubTime, update_time AS updateTime
+    </sql>
+
+</mapper>
