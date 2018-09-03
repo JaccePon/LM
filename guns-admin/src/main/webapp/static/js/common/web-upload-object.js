@@ -37,10 +37,15 @@
 		 */
 		init : function() {
 			var uploader = this.create();
-			this.bindEvent(uploader);
+			this.bindEvent(uploader,'');
 			return uploader;
 		},
-		
+		initForblog : function(showId) {
+			var uploader = this.create();
+			this.bindEvent(uploader,showId);
+			return uploader;
+		},
+
 		/**
 		 * 创建webuploader对象
 		 */
@@ -70,22 +75,37 @@
 		/**
 		 * 绑定事件
 		 */
-		bindEvent : function(bindedObj) {
+		bindEvent : function(bindedObj,showId) {
 			var me =  this;
 			bindedObj.on('fileQueued', function(file) {
-				var $li = $('<div><img width="100px" height="100px"></div>');
-				var $img = $li.find('img');
 
-				$("#" + me.uploadPreId).html($li);
+				if(showId!=""){
 
-				// 生成缩略图
-				bindedObj.makeThumb(file, function(error, src) {
-					if (error) {
-						$img.replaceWith('<span>不能预览</span>');
-						return;
-					}
-					$img.attr('src', src);
-				}, me.picWidth, me.picHeight);
+                    bindedObj.makeThumb(file, function(error, src) {
+                        if (error) {
+                            Feng.error("上传失败");
+                            return;
+                        }
+                        $("#"+showId).attr('src', src);
+                    }, 320,208);
+
+				}else{
+
+                    var $li = $('<div><img width="100px" height="100px"></div>');
+                    var $img = $li.find('img');
+
+                    $("#" + me.uploadPreId).html($li);
+
+                    // 生成缩略图
+                    bindedObj.makeThumb(file, function(error, src) {
+                        if (error) {
+                            $img.replaceWith('<span>不能预览</span>');
+                            return;
+                        }
+                        $img.attr('src', src);
+                    }, me.picWidth, me.picHeight);
+
+				}
 			});
 
 			// 文件上传过程中创建进度条实时显示。

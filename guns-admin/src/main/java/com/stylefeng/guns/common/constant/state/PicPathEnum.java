@@ -9,7 +9,7 @@ import java.io.File;
  */
 public enum PicPathEnum {
 
-    USER(0, "user"+ File.separator),ORDER(1, "order"+ File.separator),TEMP(99, "temp"+ File.separator);
+    USER(0, "user"+ File.separator),ORDER(1, "order"+ File.separator),BLOG(2,"blog"+ File.separator),TEMP(99, "temp"+ File.separator);
 
     int code;
     String path;

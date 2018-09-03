@@ -8,10 +8,12 @@
 <link href="${ctxPath}/static/css/blog/bootstrap.min.css" type="text/css" rel="stylesheet">
 <link href="${ctxPath}/static/css/blog/style.css" type="text/css" rel="stylesheet">
 <link type="text/css" href="${ctxPath}/static/css/blog/nprogress.css" rel="stylesheet">
+<link href="${ctxPath}/static/css/plugins/webuploader/webuploader.css" rel="stylesheet">
 <!--[if lt IE 9]>
     <script src="${ctxPath}/static/js/blog/html5shiv.min.js" type="text/javascript"></script>
     <script src="${ctxPath}/static/js/blog/respond.min.js" type="text/javascript"></script>
     <script src="${ctxPath}/static/js/blog/selectivizr-min.js" type="text/javascript"></script>
+
 <![endif]-->
 <link rel="apple-touch-icon-precomposed" href="../../../static/img/blog/icon/icon.png">
 <link rel="shortcut icon" href="../../../static/img/blog/icon/favicon.ico">
@@ -69,7 +71,7 @@ window.onload = function() {
   ${layoutContent}
   <aside class="sidebar visible-lg"><!--右侧>992px显示-->
     <div class="sentence"> <strong>每日一句</strong>
-      <h2>2015年11月1日 星期日</h2>
+      <h2 id="showCTime"></h2>
       <p>你是我人生中唯一的主角，我却只能是你故事中的一晃而过得路人甲。</p>
     </div>
     <div id="search" class="sidebar-block search" role="search">
@@ -109,13 +111,23 @@ window.onload = function() {
     </div>
   </aside>
   <!--/右侧>992px显示-->
-  <footer class="footer">POWERED BY &copy;<a href="#">个人技术博客 XXXXX.COM</a> ALL RIGHTS RESERVED &nbsp;&nbsp;&nbsp;<span><a href="http://www.mycodes.net/" target="_blank">源码之家</a></span> <span style="display:none"><a href="">网站统计</a></span> </footer>
+  <footer class="footer">POWERED BY &copy;<a href="www.jaccepon.xyz/blog">个人技术博客 jaccepon.xyz</a> ALL RIGHTS RESERVED &nbsp;&nbsp;&nbsp;<span><a href="http://www.mycodes.net/" target="_blank">源码之家</a></span> <span style="display:none"><a href="">网站统计</a></span> </footer>
 </section>
 <div><a href="javascript:;" class="gotop" style="display:none;"></a></div>
-<!--/返回顶部--> 
-<script src="${ctxPath}/static/js/blog/jquery-2.1.4.min.js" type="text/javascript"></script> 
+<!--/返回顶部-->
+<script src="${ctxPath}/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="${ctxPath}/static/js/plugins/layer/layer.min.js"></script>
+<script src="${ctxPath}/static/js/plugins/layer/laydate/laydate.js"></script>
 <script src="${ctxPath}/static/js/blog/nprogress.js" type="text/javascript" ></script>
 <script src="${ctxPath}/static/js/blog/bootstrap.min.js" type="text/javascript"></script>
+<script src="${ctxPath}/static/js/common/web-upload-object.js"></script>
+<script src="${ctxPath}/static/js/plugins/webuploader/webuploader.min.js"></script>
+<script src="${ctxPath}/static/js/common/Feng.js"></script>
+<script src="${ctxPath}/static/js/common/jaccePon.js"></script>
+<script type="text/javascript">
+    Feng.addCtx("${ctxPath}");
+    Feng.sessionTimeoutRegistry();
+</script>
 <script type="text/javascript">
 //页面加载
 $('body').show();
@@ -124,7 +136,19 @@ NProgress.start();
 setTimeout(function() { NProgress.done(); $('.fade').removeClass('out'); }, 1000);
 //返回顶部按钮
 $(function(){
-	$(window).scroll(function(){
+
+    var show_day=new Array('星期一','星期二','星期三','星期四','星期五','星期六','星期日');
+    var time=new Date();
+    var year=time.getFullYear();
+    var month=time.getMonth();
+    var date=time.getDate();
+    var day=time.getDay();
+    month=month+1;
+    month<10?month='0'+month:month;
+    var now_time=year+'年'+month+'月'+date+'日'+'  '+show_day[day-1];
+    $("#showCTime").html(now_time);
+
+    $(window).scroll(function(){
 		if($(window).scrollTop()>100){
 			$(".gotop").fadeIn();	
 		}
